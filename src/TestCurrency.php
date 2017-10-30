@@ -37,11 +37,14 @@ class TestCurrency implements CurrencyContract
     /**
      * @param $code
      *
-     * @return CurrencyContract
+     * @return CurrencyContract | null
      */
     public static function fromCode($code)
     {
-        return new static($code, static::$currencies[$code]);
+        if (array_get(static::$currencies, $code)) {
+            return new static($code, static::$currencies[$code]);
+        }
+        return null;
     }
 
     /**

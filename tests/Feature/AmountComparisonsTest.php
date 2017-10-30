@@ -2,17 +2,10 @@
 
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
-use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountComparisonsTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Amount::test();
-    }
-
     public function test_equals()
     {
         $this->assertTrue($this->amount(100.001)->equals($this->amount(100.001)));

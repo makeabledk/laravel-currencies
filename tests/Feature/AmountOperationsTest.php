@@ -8,12 +8,6 @@ use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountOperationsTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Amount::test();
-    }
-
     public function test_it_can_add_amounts_of_different_currencies()
     {
         $sum = $this

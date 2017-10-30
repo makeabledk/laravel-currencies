@@ -53,7 +53,7 @@ trait HasBaseCurrency
         }
 
         if (! $currency instanceof Currency) {
-            throw new InvalidCurrencyException('Currency not found: '.$currency);
+            throw new InvalidCurrencyException("Currency {$currency} is not a valid currency");
         }
 
         return $currency;

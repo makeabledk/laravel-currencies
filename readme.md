@@ -115,8 +115,10 @@ $dkk = $eur->convertTo(Currency::fromCode('DKK')); // 750
 Perform simple calculations - even between currencies!
 ```php
 $amount = new Amount(100, Currency::fromCode('EUR'));
+$amount = new Amount(100, 'EUR'); // short hand instantiation
+
 $amount->subtract(new Amount(50)); // 50 eur
-$amount->subtract(new Amount(375, Currency::fromCode('DKK'))); // 50 eur
+$amount->subtract(new Amount(375, 'DKK')); // 50 eur
 ```
 
 Given you have a Product eloquent model with a @getPriceAttribute() accessor that returns an Amount object, you can even do this:
@@ -131,7 +133,7 @@ $amount = new Amount(110);
 $amount->minimum(new Amount(80)); // 110 EUR
 $amount->minimum(new Amount(120)); // 120 EUR
 $amount->maximum(new Amount(80)); // 80 EUR
-$amount->maximum(new Amount(750, Currency::fromCode('DKK')); // 100 EUR (eq. 750 DKK)
+$amount->maximum(new Amount(750, 'DKK'); // 100 EUR (eq. 750 DKK)
 ```
 
 Easily export as an array, and re-instantiate if needed. Great for serving client API*.

@@ -4,18 +4,13 @@ namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
+use Makeable\LaravelCurrencies\InvalidCurrencyException;
 use Makeable\LaravelCurrencies\MissingBaseCurrencyException;
 use Makeable\LaravelCurrencies\TestCurrency as Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        Amount::test();
-    }
-
     public function test_amount_requires_base_currency()
     {
         $this->expectException(MissingBaseCurrencyException::class);
@@ -29,6 +24,12 @@ class AmountTest extends TestCase
     public function test_it_defaults_to_base_currency()
     {
         $this->assertEquals('EUR', $this->amount(100)->currency()->getCode());
+    }
+
+    public function test_it_throws_exception_on_invalid_currency()
+    {
+        $this->expectException(InvalidCurrencyException::class);
+        $this->amount(2, 'FOO');
     }
 
     public function test_it_has_a_zero_instantiator()

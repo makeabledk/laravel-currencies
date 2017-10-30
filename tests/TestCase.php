@@ -7,6 +7,12 @@ use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        Amount::test();
+    }
+
     protected function amount($amount, $currency = null)
     {
         return new Amount($amount, $currency);

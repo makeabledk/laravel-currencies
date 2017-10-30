@@ -13,11 +13,12 @@ class Currency extends Model implements CurrencyContract
 
     /**
      * @param $code
-     * @return static
+     * @return Currency
+     * @throws InvalidCurrencyException
      */
     public static function fromCode($code)
     {
-        return static::code($code)->firstOrFail();
+        return static::code($code)->first();
     }
 
     // _________________________________________________________________________________________________________________
