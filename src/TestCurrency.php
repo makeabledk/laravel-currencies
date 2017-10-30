@@ -44,7 +44,6 @@ class TestCurrency implements CurrencyContract
         if (array_get(static::$currencies, $code)) {
             return new static($code, static::$currencies[$code]);
         }
-        return null;
     }
 
     /**
