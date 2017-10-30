@@ -25,10 +25,10 @@ class Currency extends Model implements CurrencyContract
     protected $rememberCacheTag = 'currencies';
 
     /**
-     * Always cache queries. Cache is flushed on update by production-seeder
+     * Always cache queries. Cache is flushed on update by production-seeder.
      * @var int
      */
-    protected $rememberFor = 60*24*365;
+    protected $rememberFor = 60 * 24 * 365;
 
     /**
      * @param $code
