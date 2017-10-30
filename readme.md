@@ -82,8 +82,7 @@ Now your database table should look something like this:
 | id | code | exchange_rate |
 |----|------|---------------|
 | 1  | EUR  | 100.00        |
-| 2  | USD  | 111.00        |
-| 3  | DKK  | 750.00        |
+| 2  | DKK  | 750.00        |
 
 Tip: If you don't want to hardcode exchange rates, create a console-command that fetches and updates from an external service, and ommit the field from the seeder.
 
