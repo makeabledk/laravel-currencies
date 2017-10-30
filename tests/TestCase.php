@@ -27,6 +27,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         putenv('APP_ENV=testing');
         putenv('APP_DEBUG=true');
+        putenv('CACHE_DRIVER=array');
         putenv('DB_CONNECTION=sqlite');
         putenv('DB_DATABASE=:memory:');
 
