@@ -11,7 +11,7 @@ class CurrencyTest extends TestCase
     use RefreshDatabase;
 
     /** @test **/
-    function it_can_create_and_find_currencies()
+    public function it_can_create_and_find_currencies()
     {
         Currency::create(['code' => 'EUR', 'exchange_rate' => 100]);
 

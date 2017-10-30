@@ -77,7 +77,7 @@ class Amount implements Arrayable
     }
 
     /**
-     * Use the fake currency class as implementation for test purposes
+     * Use the fake currency class as implementation for test purposes.
      */
     public static function test()
     {
