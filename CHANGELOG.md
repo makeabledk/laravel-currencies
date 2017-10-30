@@ -2,7 +2,10 @@
 
 All notable changes will be documented in this file
 
-## v0.9.3 - 2017-10-30
+## v0.10.1 - 2017-10-30
+- Disable cache tagging per default for improved compatibility
+
+## v0.10.0 - 2017-10-30
 - Add currency caching using Watson/Rememberable
 
 ## v0.9.2 - 2017-10-30

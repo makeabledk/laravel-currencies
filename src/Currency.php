@@ -22,7 +22,7 @@ class Currency extends Model implements CurrencyContract
     /**
      * @var string
      */
-    protected $rememberCacheTag = 'currencies';
+//    protected $rememberCacheTag = 'currencies'; // Uncomment if your cache store supports tags
 
     /**
      * Always cache queries. Cache is flushed on update by production-seeder.
