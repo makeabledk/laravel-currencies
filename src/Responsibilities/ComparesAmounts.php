@@ -34,6 +34,14 @@ trait ComparesAmounts
     }
 
     /**
+     * @return bool
+     */
+    public function isZero()
+    {
+        return $this->get() === (float) 0;
+    }
+
+    /**
      * @param Amount $amount
      * @return bool
      */

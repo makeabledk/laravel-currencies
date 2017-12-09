@@ -65,4 +65,9 @@ class AmountTest extends TestCase
         $amount = $this->amount(100);
         $this->assertEquals($amount->toFormat(), (string) $amount);
     }
+
+    public function test_it_can_return_in_cents()
+    {
+        $this->assertEquals(20000, $this->amount(200)->toCents());
+    }
 }

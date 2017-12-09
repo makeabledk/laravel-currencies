@@ -97,6 +97,14 @@ class Amount implements Arrayable
     }
 
     /**
+     * @return float
+     */
+    public function toCents()
+    {
+        return $this->get() * 100;
+    }
+
+    /**
      * @return string
      */
     public function toFormat()
