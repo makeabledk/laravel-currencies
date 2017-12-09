@@ -39,7 +39,7 @@ class AmountComparisonsTest extends TestCase
         $this->assertFalse($this->amount(100.001)->lte($this->amount(100)));
     }
 
-    function test_is_zero()
+    public function test_is_zero()
     {
         $this->assertTrue($this->amount(0)->isZero());
         $this->assertTrue($this->amount(0.004)->isZero());
