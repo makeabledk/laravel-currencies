@@ -3,8 +3,8 @@
 namespace Makeable\LaravelCurrencies\Responsibilities;
 
 use Makeable\LaravelCurrencies\BaseCurrency;
-use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 use Makeable\LaravelCurrencies\CurrencyContract;
+use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 use Makeable\LaravelCurrencies\DefaultCurrency;
 use Makeable\LaravelCurrencies\InvalidCurrencyException;
 use Makeable\LaravelCurrencies\MissingBaseCurrencyException;
@@ -21,6 +21,7 @@ trait InteractsWithCurrencies
             if (! static::validCurrency($currency = app(BaseCurrency::class))) {
                 throw new \Exception();
             }
+
             return $currency;
         }, function () {
             throw new MissingBaseCurrencyException();

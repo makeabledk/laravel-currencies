@@ -44,7 +44,7 @@ class Amount implements Arrayable
      */
     public static function test()
     {
-        app()->singleton(BaseCurrency::class, function() {
+        app()->singleton(BaseCurrency::class, function () {
             return TestCurrency::fromCode('EUR');
         });
     }
