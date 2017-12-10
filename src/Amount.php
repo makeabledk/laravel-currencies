@@ -69,6 +69,16 @@ class Amount implements Arrayable
     }
 
     /**
+     * @param $amount
+     * @param Currency | mixed $currency null
+     * @return static
+     */
+    public static function fromCents($amount, $currency = null)
+    {
+        return new static($amount / 100, $currency);
+    }
+
+    /**
      * @return float
      */
     public function get()
