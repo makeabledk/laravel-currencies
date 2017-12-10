@@ -4,7 +4,6 @@ namespace Makeable\LaravelCurrencies\Tests;
 
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
-use Makeable\LaravelCurrencies\DefaultCurrency;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -23,7 +22,6 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     protected function unsetContainer($abstract)
     {
         app()->bind($abstract, function () {
-            return null;
         });
 
         return $this;
