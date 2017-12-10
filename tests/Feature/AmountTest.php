@@ -3,22 +3,38 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
+use Makeable\LaravelCurrencies\BaseCurrency;
+use Makeable\LaravelCurrencies\DefaultCurrency;
 use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
 use Makeable\LaravelCurrencies\InvalidCurrencyException;
 use Makeable\LaravelCurrencies\MissingBaseCurrencyException;
 use Makeable\LaravelCurrencies\TestCurrency as Currency;
+use Makeable\LaravelCurrencies\TestCurrency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountTest extends TestCase
 {
     public function test_amount_requires_base_currency()
     {
+        $this->unsetContainer(BaseCurrency::class);
+
         $this->expectException(MissingBaseCurrencyException::class);
 
-        // we need to forcefully reset baseCurrency to test this, as other tests may have set it already
-        new class(100, Currency::fromCode('DKK')) extends Amount {
-            protected static $baseCurrency = null;
-        };
+        new Amount(100);
+    }
+
+    public function test_a_default_currency_can_be_specified()
+    {
+        $this->assertEquals('EUR', (new Amount(100))->currency()->getCode());
+
+        app()->singleton(DefaultCurrency::class, function () {
+            return TestCurrency::fromCode('DKK');
+        });
+
+        $this->assertEquals('DKK', Amount::defaultCurrency()->getCode());
+        $this->assertEquals('DKK', (new Amount(100))->currency()->getCode());
+
+        $this->unsetContainer(DefaultCurrency::class);
     }
 
     public function test_it_defaults_to_base_currency()

@@ -5,7 +5,7 @@ namespace Makeable\LaravelCurrencies\Responsibilities;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 
-trait ConvertsCurrencies
+trait ConvertsBetweenCurrencies
 {
     /**
      * @param Currency $currency

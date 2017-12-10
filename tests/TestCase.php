@@ -4,18 +4,29 @@ namespace Makeable\LaravelCurrencies\Tests;
 
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
+use Makeable\LaravelCurrencies\DefaultCurrency;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
     public function setUp()
     {
         parent::setUp();
+
         Amount::test();
     }
 
     protected function amount($amount, $currency = null)
     {
         return new Amount($amount, $currency);
+    }
+
+    protected function unsetContainer($abstract)
+    {
+        app()->bind($abstract, function () {
+            return null;
+        });
+
+        return $this;
     }
 
     /**
