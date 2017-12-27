@@ -45,7 +45,7 @@ trait SerializesAmounts
      */
     public function toCents()
     {
-        return (int) $this->get() * 100;
+        return (int) ($this->get() * 100);
     }
 
     /**

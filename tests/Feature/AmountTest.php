@@ -89,6 +89,6 @@ class AmountTest extends TestCase
 
     public function test_it_can_return_in_cents()
     {
-        $this->assertEquals(20000, $this->amount(200)->toCents());
+        $this->assertEquals(12346, $this->amount(123.456)->toCents());
     }
 }
