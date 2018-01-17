@@ -31,6 +31,14 @@ trait SerializesAmounts
     /**
      * @return array
      */
+    function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return [

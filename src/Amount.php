@@ -3,9 +3,10 @@
 namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
 use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 
-class Amount implements Arrayable
+class Amount implements Arrayable, JsonSerializable
 {
     use Helpers\RetrievesValues,
         Helpers\ValidatesArrays,
