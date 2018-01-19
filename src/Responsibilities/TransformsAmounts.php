@@ -20,6 +20,18 @@ trait TransformsAmounts
     }
 
     /**
+     * @param $factor
+     * @return Amount
+     */
+    public function divide($factor)
+    {
+        return new static(
+            $this->amount / $factor,
+            $this->currency()
+        );
+    }
+
+    /**
      * @param Amount $amount
      *
      * @return Amount
@@ -45,6 +57,18 @@ trait TransformsAmounts
         }
 
         return $this;
+    }
+
+    /**
+     * @param $factor
+     * @return Amount
+     */
+    public function multiply($factor)
+    {
+        return new static(
+            $this->amount * $factor,
+            $this->currency()
+        );
     }
 
     /**

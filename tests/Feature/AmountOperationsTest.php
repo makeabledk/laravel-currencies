@@ -73,4 +73,14 @@ class AmountOperationsTest extends TestCase
         $this->assertEquals(5.11, $this->amount(10)->maximum($this->amount(5.11))->get());
         $this->assertEquals(5, $this->amount(5)->maximum($this->amount(10))->get());
     }
+
+    public function test_it_can_divide_by_numbers()
+    {
+        $this->assertEquals(5, $this->amount(7.5)->divide(1.5)->get());
+    }
+
+    public function test_it_can_multiply_by_numbers()
+    {
+        $this->assertEquals(7.5, $this->amount(5)->multiply(1.5)->get());
+    }
 }
