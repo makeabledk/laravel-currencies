@@ -70,6 +70,11 @@ class AmountTest extends TestCase
         $this->assertEquals('DKK', $imported->currency()->getCode());
     }
 
+    public function test_it_returns_null_when_importing_null()
+    {
+        $this->assertNull(Amount::fromArray(null));
+    }
+
     public function test_it_fails_on_invalid_import()
     {
         $this->expectException(MissingPropertiesException::class);

@@ -2,17 +2,23 @@
 
 namespace Makeable\LaravelCurrencies\Responsibilities;
 
+use Makeable\LaravelCurrencies\Amount;
+
 trait SerializesAmounts
 {
     /**
      * @param array $exported
      *
-     * @return Amount
+     * @return Amount|null
      *
      * @throws \Exception
      */
     public static function fromArray($exported)
     {
+        if ($exported === null) {
+            return null;
+        }
+
         static::requiresProperties(['amount', 'currency'], $exported);
 
         return new static($exported['amount'], static::normalizeCurrency($exported['currency']));

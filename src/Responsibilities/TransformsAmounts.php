@@ -100,8 +100,9 @@ trait TransformsAmounts
         $sum = null;
 
         foreach ($items as $item) {
-            $amount = $callback($item);
-            $sum = $sum ? $sum->add($amount) : $amount;
+            if (($amount = $callback($item)) !== null) {
+                $sum = $sum ? $sum->add($amount) : $amount;
+            }
         }
 
         return $sum ?: static::zero();

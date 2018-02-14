@@ -26,12 +26,17 @@ class AmountOperationsTest extends TestCase
         $this->assertEquals(50, $sum->get());
     }
 
-    public function it_can_sum_an_array_of_amounts()
+    public function test_it_can_sum_an_array_of_amounts()
     {
         $this->assertEquals(250, Amount::sum([$this->amount(200), $this->amount(50)])->get());
     }
 
-    public function it_can_sum_an_multidimensional_array_containing_amounts_using_a_key()
+    public function test_it_ignores_null_when_summing()
+    {
+        $this->assertEquals(250, Amount::sum([$this->amount(200), null, $this->amount(50)])->get());
+    }
+
+    public function test_it_can_sum_an_multidimensional_array_containing_amounts_using_a_key()
     {
         $sum = Amount::sum([
             ['amount' => $this->amount(200)],
@@ -41,7 +46,7 @@ class AmountOperationsTest extends TestCase
         $this->assertEquals(250, $sum->get());
     }
 
-    public function it_can_sum_an_multidimensional_array_containing_amounts_using_a_callback()
+    public function test_it_can_sum_an_multidimensional_array_containing_amounts_using_a_callback()
     {
         $sum = Amount::sum([
             ['amount' => $this->amount(200)],
