@@ -16,7 +16,7 @@ trait SerializesAmounts
     public static function fromArray($exported)
     {
         if ($exported === null) {
-            return null;
+            return;
         }
 
         static::requiresProperties(['amount', 'currency'], $exported);
