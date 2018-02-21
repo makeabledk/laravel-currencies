@@ -14,6 +14,10 @@ trait ConvertsBetweenCurrencies
      */
     public function convertTo(Currency $currency)
     {
+        if ($this->currency->getCode() === $currency->getCode()) {
+            return $this;
+        }
+
         $baseAmount = $this->amount;
 
         if ($this->currency->getCode() !== static::baseCurrency()->getCode()) {
