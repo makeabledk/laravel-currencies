@@ -2,6 +2,7 @@
 
 namespace Makeable\LaravelCurrencies\Tests;
 
+use Illuminate\Database\Migrations\Migrator;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
 
@@ -14,11 +15,21 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         Amount::test();
     }
 
+    /**
+     * @param $amount
+     * @param null $currency
+     * @return Amount
+     * @throws \Exception
+     */
     protected function amount($amount, $currency = null)
     {
         return new Amount($amount, $currency);
     }
 
+    /**
+     * @param $abstract
+     * @return $this
+     */
     protected function unsetContainer($abstract)
     {
         app()->bind($abstract, function () {
@@ -45,6 +56,9 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $app->useEnvironmentPath(__DIR__.'/..');
         $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
         $app->register(CurrenciesServiceProvider::class);
+        $app->afterResolving('migrator', function (Migrator $migrator) {
+            $migrator->path(__DIR__.'/migrations/');
+        });
 
         return $app;
     }

@@ -30,9 +30,10 @@ On Laravel versions < 5.5, you must include the service provider in you `config/
 ]
 ```
 
-After installation run migrations to create the `currencies` table
+After installation you mus publish and run migrations to create the `currencies` table
 
-```
+```bash
+php artisan vendor:publish --provider="Makeable\LaravelCurrencies\CurrenciesServiceProvider"
 php artisan migrate
 ```
 
@@ -90,42 +91,71 @@ Note that this package requires [https://github.com/dwightwatson/rememberable]()
 
 Tip: If you don't want to hardcode exchange rates, create a console-command that fetches and updates from an external service, and ommit the field from the seeder.
 
-### Register base currency
+### Register base currency (required)
 
 The amount object requires a base currency that it uses to convert between currencies. 
+
+The exchange rates given for your currencies must all relate to the base currency.
 
 Define it in your `AppServiceProvider@boot`:
 
 ```php
 public function boot() {
-    Amount::baseCurrency(Currency::fromCode('EUR'));
+    $this->app->singleton(\Makeable\LaravelCurrencies\BaseCurrency::class, function () {
+        return \Makeable\LaravelCurrencies\Currency::fromCode('EUR');
+    });
 }
 ```
 
+### Register default currency (optional)
+
+Additionally you have the option to define a default currency if this is not the same as your base-currency. 
+
+You may want to have a global currency such as USD or EUR for your base-currency to perform conversions, meanwhile your application defaults to display a local currency.
+
+This can be achieved by defining a default-currency in your `AppServiceProvider@boot` as well:
+
+```php
+public function boot() {
+    // Define base currency 
+    // [...]
+
+    // Define default currency
+    $this->app->singleton(\Makeable\LaravelCurrencies\BaseCurrency::class, function () {
+        return \Makeable\LaravelCurrencies\Currency::fromCode('DKK');
+    });
+}
+```
+
+Now when instantiating an amount without an explicit Currency it will default to 'DKK':
+
+```php
+new Amount (100); // 100 DKK
+Amount::zero(); // 0 DKK
+```
 
 ### Example usages
 Quickly create an amount
 ```php
 new Amount(100); // EUR since that's our default
 new Amount(100, Currency::fromCode('DKK')); 
+new Amount(100, 'DKK'); // It automatically instantiates a currency instance given a currency-code
 ```
 
 Convert between currencies
 ```php
 $eur = new Amount(100);
-$dkk = $eur->convertTo(Currency::fromCode('DKK')); // 750 
+$dkk = $eur->convertTo('DKK'); // 750 DKK
 ```
 
 Perform simple calculations - even between currencies!
 ```php
-$amount = new Amount(100, Currency::fromCode('EUR'));
-$amount = new Amount(100, 'EUR'); // short hand instantiation
-
+$amount = new Amount(100, 'EUR');
 $amount->subtract(new Amount(50)); // 50 eur
 $amount->subtract(new Amount(375, 'DKK')); // 50 eur
 ```
 
-Given you have a Product eloquent model with a @getPriceAttribute() accessor that returns an Amount object, you can even do this:
+Imagine you have a Product eloquent model with a @getPriceAttribute() accessor that returns an Amount object, you can even do this:
 ```php
 $products = Product::all();
 $productsTotalSum = Amount::sum($products, 'price'); 
@@ -134,8 +164,12 @@ $productsTotalSum = Amount::sum($products, 'price');
 Use the fluent modifiers for easy manipulation
 ```php
 $amount = new Amount(110);
+
+// Ensure that the amount at least a certain amount
 $amount->minimum(new Amount(80)); // 110 EUR
 $amount->minimum(new Amount(120)); // 120 EUR
+
+// Ensure that the amount is no bigger than a certain amount
 $amount->maximum(new Amount(80)); // 80 EUR
 $amount->maximum(new Amount(750, 'DKK'); // 100 EUR (eq. 750 DKK)
 ```
