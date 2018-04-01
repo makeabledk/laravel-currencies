@@ -88,4 +88,9 @@ class AmountOperationsTest extends TestCase
     {
         $this->assertEquals(7.5, $this->amount(5)->multiply(1.5)->get());
     }
+
+    public function test_it_can_get_percentages()
+    {
+        $this->assertEquals(7.5, $this->amount(100)->percent(7.5)->get());
+    }
 }

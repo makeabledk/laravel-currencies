@@ -72,6 +72,18 @@ trait TransformsAmounts
     }
 
     /**
+     * @param $percentage
+     * @return Amount
+     */
+    public function percent($percentage)
+    {
+        return new static(
+            $this->amount * $percentage / 100,
+            $this->currency()
+        );
+    }
+
+    /**
      * @param Amount $amount
      *
      * @return Amount
