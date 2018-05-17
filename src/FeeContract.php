@@ -5,7 +5,7 @@ namespace Makeable\LaravelCurrencies;
 interface FeeContract
 {
     /**
-     * Get fee size on given amount
+     * Get fee size on given amount.
      *
      * @param Amount $amount
      * @return mixed
@@ -13,7 +13,7 @@ interface FeeContract
     public function get(Amount $amount);
 
     /**
-     * Subtract fee from given amount
+     * Subtract fee from given amount.
      *
      * @param Amount $amount
      * @return mixed

@@ -3,14 +3,7 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\BaseCurrency;
-use Makeable\LaravelCurrencies\DefaultCurrency;
 use Makeable\LaravelCurrencies\FeeContract;
-use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
-use Makeable\LaravelCurrencies\InvalidCurrencyException;
-use Makeable\LaravelCurrencies\MissingBaseCurrencyException;
-use Makeable\LaravelCurrencies\TestCurrency;
-use Makeable\LaravelCurrencies\TestCurrency as Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class FeeTest extends TestCase
