@@ -81,4 +81,12 @@ class Amount implements Arrayable, JsonSerializable
     {
         return round($this->amount, 2);
     }
+
+    /**
+     * @return float
+     */
+    public function getRaw()
+    {
+        return $this->amount;
+    }
 }

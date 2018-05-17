@@ -2,17 +2,26 @@
 
 namespace Makeable\LaravelCurrencies\Responsibilities;
 
+use BadMethodCallException;
 use Makeable\LaravelCurrencies\Amount;
+use Makeable\LaravelCurrencies\FeeContract;
 
 trait TransformsAmounts
 {
     /**
-     * @param Amount $amount
+     * @param Amount | FeeContract $amount
      *
      * @return Amount
+     * @throws \Throwable
      */
-    public function add(Amount $amount)
+    public function add($amount)
     {
+        if ($amount instanceof FeeContract) {
+            $amount = $amount->get($this);
+        }
+
+        throw_unless($amount instanceof Amount, BadMethodCallException::class);
+
         return new static(
             $this->amount + $amount->convertTo($this->currency())->amount,
             $this->currency()
@@ -84,12 +93,19 @@ trait TransformsAmounts
     }
 
     /**
-     * @param Amount $amount
+     * @param Amount | FeeContract $amount
      *
      * @return Amount
+     * @throws \Throwable
      */
-    public function subtract(Amount $amount)
+    public function subtract($amount)
     {
+        if ($amount instanceof FeeContract) {
+            return $amount->subtract($this)->convertTo($this->currency());
+        }
+
+        throw_unless($amount instanceof Amount, BadMethodCallException::class);
+
         return new static(
             $this->amount - $amount->convertTo($this->currency())->amount,
             $this->currency()
