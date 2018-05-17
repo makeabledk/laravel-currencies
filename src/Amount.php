@@ -77,9 +77,9 @@ class Amount implements Arrayable, JsonSerializable
     /**
      * @return float
      */
-    public function get()
+    public function get($decimals = 2)
     {
-        return round($this->amount, 2);
+        return round($this->amount, $decimals);
     }
 
     /**

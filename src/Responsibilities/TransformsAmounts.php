@@ -93,6 +93,18 @@ trait TransformsAmounts
     }
 
     /**
+     * @param $decimals
+     * @return Amount
+     */
+    public function round($decimals)
+    {
+        return new static(
+            $this->get($decimals),
+            $this->currency()
+        );
+    }
+
+    /**
      * @param Amount | FeeContract $amount
      *
      * @return Amount
