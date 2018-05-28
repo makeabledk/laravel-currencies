@@ -7,6 +7,19 @@ use Makeable\LaravelCurrencies\Amount;
 trait SerializesAmounts
 {
     /**
+     * @var callable|null
+     */
+    protected static $formatter;
+
+    /**
+     * @param $formatter
+     */
+    public static function formatUsing($formatter)
+    {
+        static::$formatter = $formatter;
+    }
+
+    /**
      * @param array $exported
      *
      * @return Amount|null
@@ -63,10 +76,19 @@ trait SerializesAmounts
     }
 
     /**
+     * @param callable|null $formatter
      * @return string
      */
-    public function toFormat()
+    public function toFormat($formatter = null)
     {
+        if ($formatter) {
+            return call_user_func($formatter, $this);
+        }
+
+        if (static::$formatter) {
+            return call_user_func(static::$formatter, $this);
+        }
+
         return $this->currency()->getCode().' '.number_format($this->get(), 0, ',', '.');
     }
 }

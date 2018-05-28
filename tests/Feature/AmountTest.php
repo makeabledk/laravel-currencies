@@ -96,4 +96,22 @@ class AmountTest extends TestCase
     {
         $this->assertEquals(12346, $this->amount(123.456)->toCents());
     }
+    
+    public function test_a_default_formatter_can_be_specified()
+    {
+        Amount::formatUsing(function (Amount $amount) {
+            return $amount->get();
+        });
+
+        $this->assertEquals(2, $this->amount(2)->toFormat());
+
+        Amount::formatUsing(null);
+    }
+
+    public function test_a_formatter_can_be_passed_on_the_fly()
+    {
+        $this->assertEquals(2, $this->amount(2)->toFormat(function (Amount $amount) {
+            return $amount->get();
+        }));
+    }
 }
