@@ -2,6 +2,8 @@
 
 namespace Makeable\LaravelCurrencies;
 
+use Illuminate\Support\Arr;
+
 class TestCurrency implements CurrencyContract
 {
     /**
@@ -43,7 +45,7 @@ class TestCurrency implements CurrencyContract
     {
         $code = strtoupper($code);
 
-        if (array_get(static::$currencies, $code)) {
+        if (Arr::get(static::$currencies, $code)) {
             return new static($code, static::$currencies[$code]);
         }
     }

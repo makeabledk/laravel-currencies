@@ -1,5 +1,3 @@
-
-
 # Laravel Currencies
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/makeabledk/laravel-currencies.svg?style=flat-square)](https://packagist.org/packages/makeabledk/laravel-currencies)

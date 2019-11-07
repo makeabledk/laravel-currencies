@@ -7,17 +7,16 @@
         }
     },
     "require": {
-        "php": ">=7.0.0",
-        "illuminate/container": "^5.4",
-        "illuminate/support": "^5.4",
-        "watson/rememberable": "^2.0"
+        "php": ">=7.1.0",
+        "illuminate/container": "^5.7|^6.0",
+        "illuminate/support": "^5.7|^6.0",
+        "watson/rememberable": "^3.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.3",
-        "laravel/laravel": "5.5",
-        "doctrine/dbal": "^2.5",
-        "orchestra/testbench": "~3.5",
-        "mockery/mockery": "^0.9.9"
+        "fzaninotto/faker": "^1.4",
+        "laravel/laravel": "^6.0",
+        "phpunit/phpunit": "^8.0",
+        "mockery/mockery": "^1.0"
     },
     "suggest": {
         "illuminate/database": "Required to use Eloquent Currency implementation",
@@ -36,7 +35,6 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit",
-        "style": "./vendor/bin/php-cs-fixer fix ./src --rules=@PSR2,@Symfony,ordered_class_elements,ordered_imports --verbose"
+        "test": "./vendor/bin/phpunit"
     }
 }

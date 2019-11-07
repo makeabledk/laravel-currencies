@@ -8,7 +8,32 @@ use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
-    public function setUp()
+    /**
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    public function createApplication()
+    {
+        putenv('APP_ENV=testing');
+        putenv('APP_DEBUG=true');
+        putenv('CACHE_DRIVER=array');
+        putenv('DB_CONNECTION=sqlite');
+        putenv('DB_DATABASE=:memory:');
+
+        $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
+
+        $app->useEnvironmentPath(__DIR__.'/..');
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->register(CurrenciesServiceProvider::class);
+        $app->afterResolving('migrator', function (Migrator $migrator) {
+            $migrator->path(__DIR__.'/migrations/');
+        });
+
+        return $app;
+    }
+
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -36,30 +61,5 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         });
 
         return $this;
-    }
-
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        putenv('APP_ENV=testing');
-        putenv('APP_DEBUG=true');
-        putenv('CACHE_DRIVER=array');
-        putenv('DB_CONNECTION=sqlite');
-        putenv('DB_DATABASE=:memory:');
-
-        $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
-
-        $app->useEnvironmentPath(__DIR__.'/..');
-        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-        $app->register(CurrenciesServiceProvider::class);
-        $app->afterResolving('migrator', function (Migrator $migrator) {
-            $migrator->path(__DIR__.'/migrations/');
-        });
-
-        return $app;
     }
 }

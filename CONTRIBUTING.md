@@ -14,12 +14,6 @@ We accept contributions via Pull Requests on [Github](https://github.com/makeabl
 - **Create feature branches** - Don't ask us to pull from your master branch.
 
 
-## Fixing styles
-
-``` bash
-$ composer style
-```
-
 ## Running Tests
 
 ``` bash
