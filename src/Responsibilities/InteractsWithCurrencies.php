@@ -18,7 +18,7 @@ trait InteractsWithCurrencies
     public static function baseCurrency()
     {
         return rescue(function () {
-            if (! static::validCurrency($currency = app(BaseCurrency::class))) {
+            if (!static::validCurrency($currency = app(BaseCurrency::class))) {
                 throw new \Exception();
             }
 
@@ -26,6 +26,24 @@ trait InteractsWithCurrencies
         }, function () {
             throw new MissingBaseCurrencyException();
         });
+    }
+
+    /**
+     * @param  CurrencyContract|string  $currency
+     * @return \Makeable\LaravelCurrencies\Currency
+     */
+    public static function setBaseCurrency($currency)
+    {
+        if (!$currency instanceof CurrencyContract && is_string($currency)) {
+            $currency = new \Makeable\LaravelCurrencies\Currency([
+                'code' => $currency,
+                'exchange_rate' => 100
+            ]);
+        }
+
+        app()->instance(BaseCurrency::class, $currency);
+
+        return $currency;
     }
 
     /**
@@ -53,11 +71,11 @@ trait InteractsWithCurrencies
             $currency = static::defaultCurrency();
         }
 
-        if (! static::validCurrency($currency)) {
+        if (!static::validCurrency($currency)) {
             $currency = call_user_func([get_class(static::baseCurrency()), 'fromCode'], $currency);
         }
 
-        if (! static::validCurrency($currency)) {
+        if (!static::validCurrency($currency)) {
             throw new InvalidCurrencyException("Currency {$currency} is not a valid currency");
         }
 
@@ -70,7 +88,7 @@ trait InteractsWithCurrencies
      */
     protected static function validCurrency($currency)
     {
-        if (! is_object($currency)) {
+        if (!is_object($currency)) {
             return false;
         }
 
