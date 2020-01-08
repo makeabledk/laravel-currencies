@@ -31,7 +31,7 @@ class AmountOperationsTest extends TestCase
         $this->assertEquals(350, Amount::sum([
             $this->amount(200),
             $this->amount(50),
-            100 // Raw values will be converted to amounts of default currency
+            100, // Raw values will be converted to amounts of default currency
         ])->get());
     }
 
@@ -62,7 +62,7 @@ class AmountOperationsTest extends TestCase
         $sum = Amount::sum([
             null,
             $this->amount(50, Currency::fromCode('DKK')),
-            $this->amount(100, Currency::fromCode('EUR'))
+            $this->amount(100, Currency::fromCode('EUR')),
         ]);
 
         $this->assertEquals(800, $sum->get());
