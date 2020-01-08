@@ -23,6 +23,13 @@ class AmountTest extends TestCase
         new Amount(100);
     }
 
+    public function test_a_simple_base_currency_can_be_specified()
+    {
+        Amount::setBaseCurrency('DKK');
+
+        $this->assertEquals('DKK', Amount::baseCurrency()->getCode());
+    }
+
     public function test_a_default_currency_can_be_specified()
     {
         $this->assertEquals('EUR', (new Amount(100))->currency()->getCode());

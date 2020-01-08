@@ -59,9 +59,7 @@ class Amount implements Arrayable, JsonSerializable
      */
     public static function test()
     {
-        app()->singleton(BaseCurrency::class, function () {
-            return TestCurrency::fromCode('EUR');
-        });
+        static::setBaseCurrency(TestCurrency::fromCode('EUR'));
     }
 
     /**
