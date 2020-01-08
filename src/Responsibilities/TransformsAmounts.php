@@ -141,7 +141,8 @@ trait TransformsAmounts
 
         foreach ($items as $item) {
             if (($amount = $callback($item)) !== null) {
-                $sum = $sum ? $sum->add(static::wrap($amount)) : $amount;
+                $amount = static::wrap($amount);
+                $sum = $sum ? $sum->add($amount) : $amount;
             }
         }
 

@@ -29,9 +29,9 @@ class AmountOperationsTest extends TestCase
     public function test_it_can_sum_an_array_of_amounts()
     {
         $this->assertEquals(350, Amount::sum([
+            100, // Raw values will be converted to amounts of default currency
             $this->amount(200),
             $this->amount(50),
-            100, // Raw values will be converted to amounts of default currency
         ])->get());
     }
 
