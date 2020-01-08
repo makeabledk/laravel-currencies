@@ -141,10 +141,10 @@ trait TransformsAmounts
 
         foreach ($items as $item) {
             if (($amount = $callback($item)) !== null) {
-                $sum = $sum ? $sum->add($amount) : $amount;
+                $sum = $sum ? $sum->add(static::wrap($amount)) : $amount;
             }
         }
 
-        return $sum ?: static::zero();
+        return static::wrap($sum);
     }
 }

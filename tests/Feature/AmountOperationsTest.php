@@ -28,12 +28,11 @@ class AmountOperationsTest extends TestCase
 
     public function test_it_can_sum_an_array_of_amounts()
     {
-        $this->assertEquals(250, Amount::sum([$this->amount(200), $this->amount(50)])->get());
-    }
-
-    public function test_it_ignores_null_when_summing()
-    {
-        $this->assertEquals(250, Amount::sum([$this->amount(200), null, $this->amount(50)])->get());
+        $this->assertEquals(350, Amount::sum([
+            $this->amount(200),
+            $this->amount(50),
+            100 // Raw values will be converted to amounts of default currency
+        ])->get());
     }
 
     public function test_it_can_sum_an_multidimensional_array_containing_amounts_using_a_key()
@@ -56,6 +55,19 @@ class AmountOperationsTest extends TestCase
         });
 
         $this->assertEquals(250, $sum->get());
+    }
+
+    public function test_it_uses_the_currency_from_the_first_none_null_value_when_summing()
+    {
+        $sum = Amount::sum([
+            null,
+            $this->amount(50, Currency::fromCode('DKK')),
+            $this->amount(100, Currency::fromCode('EUR'))
+        ]);
+
+        $this->assertEquals(800, $sum->get());
+        $this->assertEquals('DKK', $sum->currency()->getCode());
+        $this->assertEquals('EUR', Amount::defaultCurrency()->getCode());
     }
 
     public function test_it_uses_all_decimals_for_calculations()

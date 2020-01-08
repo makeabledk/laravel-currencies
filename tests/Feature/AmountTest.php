@@ -114,4 +114,10 @@ class AmountTest extends TestCase
             return $amount->get();
         }));
     }
+
+    public function test_it_can_wrap_a_value_to_an_amount()
+    {
+        $this->assertEquals(2, Amount::wrap(2)->get());
+        $this->assertEquals(2, Amount::wrap(new Amount(2))->get());
+    }
 }

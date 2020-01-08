@@ -30,7 +30,7 @@ class Amount implements Arrayable, JsonSerializable
      * Amount constructor.
      *
      * @param $amount
-     * @param Currency | mixed $currency null
+     * @param  Currency | mixed  $currency  null
      *
      * @throws \Exception
      */
@@ -38,6 +38,20 @@ class Amount implements Arrayable, JsonSerializable
     {
         $this->amount = $amount;
         $this->currency = static::normalizeCurrency($currency);
+    }
+
+    /**
+     * @param  mixed  $amount
+     * @return static
+     * @throws \Exception
+     */
+    public static function wrap($amount)
+    {
+        if ($amount instanceof static) {
+            return $amount;
+        }
+
+        return new static($amount);
     }
 
     /**
