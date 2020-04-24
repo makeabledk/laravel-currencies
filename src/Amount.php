@@ -2,11 +2,12 @@
 
 namespace Makeable\LaravelCurrencies;
 
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 
-class Amount implements Arrayable, JsonSerializable
+class Amount implements Arrayable, Castable, JsonSerializable
 {
     use Helpers\RetrievesValues,
         Helpers\ValidatesArrays,
@@ -27,17 +28,11 @@ class Amount implements Arrayable, JsonSerializable
     protected $currency;
 
     /**
-     * Amount constructor.
-     *
-     * @param $amount
-     * @param  Currency | mixed  $currency  null
-     *
-     * @throws \Exception
+     * @return string
      */
-    public function __construct($amount, $currency = null)
+    public static function castUsing()
     {
-        $this->amount = $amount;
-        $this->currency = static::normalizeCurrency($currency);
+        return AmountCast::class;
     }
 
     /**
@@ -68,6 +63,20 @@ class Amount implements Arrayable, JsonSerializable
     public static function zero()
     {
         return new static(0);
+    }
+
+    /**
+     * Amount constructor.
+     *
+     * @param $amount
+     * @param  Currency | mixed  $currency  null
+     *
+     * @throws \Exception
+     */
+    public function __construct($amount, $currency = null)
+    {
+        $this->amount = $amount;
+        $this->currency = static::normalizeCurrency($currency);
     }
 
     /**

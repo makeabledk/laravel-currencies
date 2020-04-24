@@ -4,7 +4,9 @@ namespace Makeable\LaravelCurrencies\Tests;
 
 use Illuminate\Database\Migrations\Migrator;
 use Makeable\LaravelCurrencies\Amount;
+use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
+use Makeable\LaravelCurrencies\Tests\Stubs\Product;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -38,6 +40,9 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         parent::setUp();
 
         Amount::test();
+        AmountCast::defaultStoredAs('%s');
+        AmountCast::defaultModelCurrency(null);
+        Product::$testCast = [];
     }
 
     /**

@@ -127,4 +127,9 @@ class AmountTest extends TestCase
         $this->assertEquals(2, Amount::wrap(2)->get());
         $this->assertEquals(2, Amount::wrap(new Amount(2))->get());
     }
+
+    public function test_it_equals_zero_when_instantiating_with_null()
+    {
+        $this->assertEquals(0.0, (new Amount(null))->get());
+    }
 }
