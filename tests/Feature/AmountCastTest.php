@@ -105,7 +105,7 @@ class AmountCastTest extends TestCase
     {
         return Product::create([
             'price_amount' => 10,
-            'price_currency' => 'DKK' // unrecognized by default
+            'price_currency' => 'DKK', // unrecognized by default
         ]);
     }
 }
