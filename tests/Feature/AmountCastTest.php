@@ -48,14 +48,17 @@ class AmountCastTest extends TestCase
     }
 
     /** @test **/
-    public function it_sets_amount_but_does_not_set_currency_on_model_by_default()
+    public function it_sets_amounts_from_various_formats()
     {
-        Product::$testCast = ['price_amount' => Amount::class];
+        AmountCast::defaultStoredAs('%s_amount', '%s_currency');
 
-        $this->assertEquals(
-            new Amount(12.34, 'EUR'), // Global test currency is EUR
-            Product::create(['price_amount' => new Amount(12.34, 'DKK')])->refresh()->price_amount
-        );
+        Product::$testCast = ['price' => Amount::class];
+
+        $price = new Amount(12.34, 'DKK');
+
+        $this->assertEquals($price, Product::create(['price' => $price])->price);
+        $this->assertEquals($price, Product::create(['price' => $price->toArray()])->price);
+        $this->assertEquals(new Amount(12.34, 'EUR'), Product::create(['price' => 12.34])->price);
     }
 
     /** @test **/
@@ -72,17 +75,13 @@ class AmountCastTest extends TestCase
     }
 
     /** @test **/
-    public function it_sets_amounts_from_various_formats()
+    public function it_throws_exception_when_setting_foreign_amount_when_no_currency_field_set()
     {
-        AmountCast::defaultStoredAs('%s_amount', '%s_currency');
+        Product::$testCast = ['price_amount' => Amount::class];
 
-        Product::$testCast = ['price' => Amount::class];
+        $this->expectException(\BadMethodCallException::class);
 
-        $price = new Amount(12.34, 'DKK');
-
-        $this->assertEquals($price, Product::create(['price' => $price])->price);
-        $this->assertEquals($price, Product::create(['price' => $price->toArray()])->price);
-        $this->assertEquals(new Amount(12.34, 'EUR'), Product::create(['price' => 12.34])->price);
+        Product::create(['price_amount' => new Amount(12.34, 'DKK')]);
     }
 
     /** @test **/
@@ -100,6 +99,19 @@ class AmountCastTest extends TestCase
             Product::create(['price' => 12.34])->price
         );
     }
+
+    /** @test **/
+    public function it_converts_null_to_zero_but_this_is_configurable()
+    {
+        Product::$testCast = ['price_amount' => Amount::class];
+
+        $this->assertEquals(Amount::zero(), (new Product())->price_amount);
+
+        Product::$testCast = ['price_amount' => Amount::class.":price_amount,,true"];
+
+        $this->assertNull((new Product())->price_amount);
+    }
+
 
     protected function product()
     {

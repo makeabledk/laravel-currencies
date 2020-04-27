@@ -13,6 +13,7 @@ class AmountCast implements CastsAttributes
 
     protected $amountField;
     protected $currencyField;
+    protected $nullable;
 
     /**
      * @param  string  $amountField
@@ -52,11 +53,15 @@ class AmountCast implements CastsAttributes
     /**
      * @param  null|string  $amountField
      * @param  null|string  $currencyField
+     * @param  bool  $nullable
      */
-    public function __construct($amountField = null, $currencyField = null)
+    public function __construct($amountField = null, $currencyField = null, $nullable = null)
     {
+        $currencyField = empty($currencyField) ? null : $currencyField; // convert '' to null
+
         $this->amountField = $amountField ?? static::$defaultAmountField;
         $this->currencyField = $currencyField ?? static::$defaultCurrencyField;
+        $this->nullable = $nullable === 'false' ? false : (bool) $nullable;
     }
 
     /**
@@ -69,10 +74,13 @@ class AmountCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return new Amount(
-            Arr::get($attributes, sprintf($this->amountField, $key)),
-            $this->getModelCurrency($model, $key, $attributes)
-        );
+        $value = Arr::get($attributes, sprintf($this->amountField, $key));
+
+        if ($value === null && $this->nullable) {
+            return null;
+        }
+
+        return new Amount($value, $this->getModelCurrency($model, $key, $attributes));
     }
 
     /**
@@ -93,15 +101,26 @@ class AmountCast implements CastsAttributes
             $value = new Amount($value, $this->getModelCurrency($model, $key, $attributes));
         }
 
-        if (! $value instanceof Amount && ! is_null($value)) {
+        if ($value === null) {
+            // We won't set currency field to null in case currency field is shared with other amounts.
+            return [sprintf($this->amountField, $key) => null];
+        }
+
+        if (! $value instanceof Amount) {
             throw new \BadMethodCallException("Failed to cast attribute {$key} from Amount");
         }
 
-        $storeAttributes[sprintf($this->amountField, $key)] = optional($value)->get();
+        if ($this->currencyField === null && ($actual = $value->currency()->getCode()) !== ($expected = $this->getModelCurrency($model, $key, $attributes))) {
+            throw new \BadMethodCallException(
+                "Attempted to set an amount of currency {$actual} instead of default {$expected}. This could lead to unexpected behavior, ".
+                "as there is no currency field defined on the model ".get_class($model).". Please convert the amount to {$expected} ".
+                "before setting it, or consider introducing a currency field on the model."
+            );
+        }
 
-        // If we're saving currency to the model, we'll only do so if there is an actual amount.
-        // We won't set currency to null in case currency field is shared with other amounts.
-        if ($this->currencyField !== null && $value !== null) {
+        $storeAttributes[sprintf($this->amountField, $key)] = $value->get();
+
+        if ($this->currencyField !== null) {
             $storeAttributes[sprintf($this->currencyField, $key)] = $value->currency()->getCode();
         }
 
