@@ -77,7 +77,7 @@ class AmountCast implements CastsAttributes
         $value = Arr::get($attributes, sprintf($this->amountField, $key));
 
         if ($value === null && $this->nullable) {
-            return null;
+            return;
         }
 
         return new Amount($value, $this->getModelCurrency($model, $key, $attributes));
@@ -113,8 +113,8 @@ class AmountCast implements CastsAttributes
         if ($this->currencyField === null && ($actual = $value->currency()->getCode()) !== ($expected = $this->getModelCurrency($model, $key, $attributes))) {
             throw new \BadMethodCallException(
                 "Attempted to set an amount of currency {$actual} instead of default {$expected}. This could lead to unexpected behavior, ".
-                "as there is no currency field defined on the model ".get_class($model).". Please convert the amount to {$expected} ".
-                "before setting it, or consider introducing a currency field on the model."
+                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$expected} ".
+                'before setting it, or consider introducing a currency field on the model.'
             );
         }
 

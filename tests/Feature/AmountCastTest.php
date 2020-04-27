@@ -107,17 +107,16 @@ class AmountCastTest extends TestCase
 
         $this->assertEquals(Amount::zero(), (new Product())->price_amount);
 
-        Product::$testCast = ['price_amount' => Amount::class.":price_amount,,true"];
+        Product::$testCast = ['price_amount' => Amount::class.':price_amount,,true'];
 
         $this->assertNull((new Product())->price_amount);
     }
-
 
     protected function product()
     {
         return Product::create([
             'price_amount' => 10,
-            'price_currency' => 'DKK' // unrecognized by default
+            'price_currency' => 'DKK', // unrecognized by default
         ]);
     }
 }
