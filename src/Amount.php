@@ -11,11 +11,11 @@ class Amount implements Arrayable, Castable, JsonSerializable
 {
     use Helpers\RetrievesValues,
         Helpers\ValidatesArrays,
+        Responsibilities\CalculatesAmounts,
         Responsibilities\ComparesAmounts,
         Responsibilities\ConvertsBetweenCurrencies,
         Responsibilities\InteractsWithCurrencies,
-        Responsibilities\SerializesAmounts,
-        Responsibilities\TransformsAmounts;
+        Responsibilities\SerializesAmounts;
 
     /**
      * @var float
@@ -33,6 +33,29 @@ class Amount implements Arrayable, Castable, JsonSerializable
     public static function castUsing()
     {
         return AmountCast::class;
+    }
+
+    /**
+     * @param  mixed  $value
+     * @param  null  $defaultCurrency
+     * @return static|null
+     * @throws \BadMethodCallException
+     */
+    public static function parse($value, $defaultCurrency = null)
+    {
+        if ($value === null || $value instanceof static) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            return Amount::fromArray($value);
+        }
+
+        if (is_numeric($value)) {
+            return new Amount($value, $defaultCurrency);
+        }
+
+        throw new \BadMethodCallException("Failed to parse given value as amount");
     }
 
     /**

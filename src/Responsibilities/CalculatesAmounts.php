@@ -6,7 +6,7 @@ use BadMethodCallException;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\FeeContract;
 
-trait TransformsAmounts
+trait CalculatesAmounts
 {
     /**
      * @param Amount | FeeContract $amount

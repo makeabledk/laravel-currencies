@@ -72,8 +72,6 @@ class CurrencySeeder extends \Illuminate\Database\Seeder
     public function run()
     {
         $this->apply($this->currencies, \Makeable\LaravelCurrencies\Currency::class, 'code');
-        
-        \Cache::flush(); // Use cache-tagging if you don't want to flush your entire cache
     }
 }
 ```
@@ -85,7 +83,7 @@ Now your database table should look something like this:
 | 1  | EUR  | 100.00        |
 | 2  | DKK  | 750.00        |
 
-Note that this package requires [https://github.com/dwightwatson/rememberable]() to throttle database queries. 
+Tip: Consider using [https://github.com/dwightwatson/rememberable]() to cache currencies and throttle database queries. 
 
 Tip: If you don't want to hardcode exchange rates, create a console-command that fetches and updates from an external service, and ommit the field from the seeder.
 

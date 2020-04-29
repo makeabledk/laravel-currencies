@@ -3,10 +3,12 @@
 namespace Makeable\LaravelCurrencies\Tests;
 
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Support\Facades\Route;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
+use Makeable\LaravelCurrencies\Tests\Stubs\ProductController;
 
 class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -32,6 +34,8 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
             $migrator->path(__DIR__.'/migrations/');
         });
 
+        Route::post('products', ProductController::class);
+
         return $app;
     }
 
@@ -43,6 +47,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         AmountCast::defaultStoredAs('%s');
         AmountCast::defaultModelCurrency(null);
         Product::$testCast = [];
+        ProductController::$rules = [];
     }
 
     /**

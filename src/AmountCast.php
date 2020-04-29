@@ -47,7 +47,7 @@ class AmountCast implements CastsAttributes
                 return static::$defaultCurrency;
             };
 
-        return $resolve(...func_get_args());
+        return $resolve(...func_get_args()) ?? Amount::defaultCurrency()->getCode();
     }
 
     /**
@@ -93,28 +93,18 @@ class AmountCast implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
-        if (is_array($value)) {
-            $value = Amount::fromArray($value);
-        }
-
-        if (is_numeric($value)) {
-            $value = new Amount($value, $this->getModelCurrency($model, $key, $attributes));
-        }
+        $value = Amount::parse($value, $modelCurrency = $this->getModelCurrency($model, $key, $attributes));
 
         if ($value === null) {
             // We won't set currency field to null in case currency field is shared with other amounts.
             return [sprintf($this->amountField, $key) => null];
         }
 
-        if (! $value instanceof Amount) {
-            throw new \BadMethodCallException("Failed to cast attribute {$key} from Amount");
-        }
-
-        if ($this->currencyField === null && ($actual = $value->currency()->getCode()) !== ($expected = $this->getModelCurrency($model, $key, $attributes))) {
+        if ($this->currencyField === null && ($actualCurrency = $value->currency()->getCode()) !== $modelCurrency) {
             throw new \BadMethodCallException(
-                "Attempted to set an amount of currency {$actual} instead of default {$expected}. This could lead to unexpected behavior, ".
-                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$expected} ".
-                'before setting it, or consider introducing a currency field on the model.'
+                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, ".
+                "as there is no currency field defined on the model ".get_class($model).". Please convert the amount to {$modelCurrency} ".
+                "before setting it, or consider introducing a currency field on the model."
             );
         }
 
