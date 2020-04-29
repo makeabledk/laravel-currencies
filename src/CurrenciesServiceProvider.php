@@ -2,7 +2,6 @@
 
 namespace Makeable\LaravelCurrencies;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Makeable\LaravelCurrencies\Rules\Amount as AmountRule;
 

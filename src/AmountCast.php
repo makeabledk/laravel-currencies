@@ -103,8 +103,8 @@ class AmountCast implements CastsAttributes
         if ($this->currencyField === null && ($actualCurrency = $value->currency()->getCode()) !== $modelCurrency) {
             throw new \BadMethodCallException(
                 "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, ".
-                "as there is no currency field defined on the model ".get_class($model).". Please convert the amount to {$modelCurrency} ".
-                "before setting it, or consider introducing a currency field on the model."
+                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency} ".
+                'before setting it, or consider introducing a currency field on the model.'
             );
         }
 

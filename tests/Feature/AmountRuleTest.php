@@ -3,7 +3,6 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
@@ -49,7 +48,7 @@ class AmountRuleTest extends TestCase
         [$amountError, $minError, $maxError] = [
             'The price must be a valid money amount.',
             'The price must be at least 0.',
-            'The price may not be greater than 1000.'
+            'The price may not be greater than 1000.',
         ];
 
         $this->handleValidationExceptions();
@@ -66,7 +65,6 @@ class AmountRuleTest extends TestCase
         $this->postJson('products', ['price' => 1000.1])->assertJsonValidationErrors(['price' => $maxError]);
         $this->postJson('products', ['price' => 1001])->assertJsonValidationErrors(['price' => $maxError]);
     }
-
 
 //
 //    /** @test **/

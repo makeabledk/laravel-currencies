@@ -65,7 +65,7 @@ class Amount implements Rule
         try {
             if (is_null($amount = \Makeable\LaravelCurrencies\Amount::parse($value))) {
                 return false;
-            };
+            }
 
             if ($this->min !== null && $amount->get() < $this->min) {
                 $this->message = trans('validation.min.numeric', ['min' => $this->min]);
@@ -78,8 +78,7 @@ class Amount implements Rule
 
                 return false;
             }
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return false;
         }
 
