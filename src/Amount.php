@@ -48,14 +48,14 @@ class Amount implements Arrayable, Castable, JsonSerializable
         }
 
         if (is_array($value)) {
-            return Amount::fromArray($value);
+            return self::fromArray($value);
         }
 
         if (is_numeric($value)) {
-            return new Amount($value, $defaultCurrency);
+            return new self($value, $defaultCurrency);
         }
 
-        throw new \BadMethodCallException("Failed to parse given value as amount");
+        throw new \BadMethodCallException('Failed to parse given value as amount');
     }
 
     /**

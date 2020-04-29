@@ -16,13 +16,13 @@ class Amount extends Text
         parent::__construct($name, $attribute);
 
         $this->displayUsing(function ($value) {
-            return $value instanceof \Makeable\LaravelCurrencies\Amount
+            return $value instanceof self
                 ? $value->toFormat()
                 : $value;
         });
 
         $this->resolveUsing(function ($value) {
-            return $value instanceof \Makeable\LaravelCurrencies\Amount
+            return $value instanceof self
                 ? $value->get()
                 : $value;
         });
