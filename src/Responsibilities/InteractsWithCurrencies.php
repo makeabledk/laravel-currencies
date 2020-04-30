@@ -56,7 +56,7 @@ trait InteractsWithCurrencies
             return app(DefaultCurrency::class);
         }, function () {
             return static::baseCurrency();
-        });
+        }, false);
     }
 
     /**
