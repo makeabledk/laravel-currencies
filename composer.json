@@ -8,12 +8,12 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "illuminate/container": "^7.0",
-        "illuminate/support": "^7.0"
+        "illuminate/container": "^7.4",
+        "illuminate/support": "^7.4"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
-        "laravel/laravel": "^7.0",
+        "laravel/laravel": "^7.4",
         "phpunit/phpunit": "^8.5",
         "mockery/mockery": "^1.3"
     },
