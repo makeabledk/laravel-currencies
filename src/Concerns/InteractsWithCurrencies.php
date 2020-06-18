@@ -23,7 +23,7 @@ trait InteractsWithCurrencies
      */
     public static function setBaseCurrency($currency)
     {
-        if (!$currency instanceof CurrencyContract && is_string($currency)) {
+        if (! $currency instanceof CurrencyContract && is_string($currency)) {
             $currency = new \Makeable\LaravelCurrencies\Currency([
                 'code' => $currency,
                 'exchange_rate' => 100,

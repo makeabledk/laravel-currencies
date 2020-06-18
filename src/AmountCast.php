@@ -36,7 +36,7 @@ class AmountCast implements CastsAttributes
 
         $this->amountField = $amountField ?? static::$defaultAmountField;
         $this->currencyField = $currencyField ?? static::$defaultCurrencyField;
-        $this->nullable = $nullable === 'false' ? false : (bool)$nullable;
+        $this->nullable = $nullable === 'false' ? false : (bool) $nullable;
     }
 
     /**
@@ -52,7 +52,7 @@ class AmountCast implements CastsAttributes
         $value = Arr::get($attributes, sprintf($this->amountField, $key));
 
         if (is_null($value) && $this->nullable) {
-            return null;
+            return;
         }
 
         return new Amount($value, $this->getModelCurrency($model, $key, $attributes));
@@ -77,8 +77,8 @@ class AmountCast implements CastsAttributes
 
         if ($this->currencyField === null && ($actualCurrency = $value->currency()->getCode()) !== $modelCurrency) {
             throw new \BadMethodCallException(
-                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, " .
-                'as there is no currency field defined on the model ' . get_class($model) . ". Please convert the amount to {$modelCurrency} " .
+                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, ".
+                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency} ".
                 'before setting it, or consider introducing a currency field on the model.'
             );
         }
