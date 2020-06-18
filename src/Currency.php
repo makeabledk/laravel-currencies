@@ -9,36 +9,53 @@ use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
 class Currency extends Model implements CurrencyContract
 {
     /**
+     * @var bool
+     */
+    public static $cacheEnabled = true;
+
+    /**
+     * @var \Illuminate\Support\Collection|null
+     */
+    protected static $cachedModels;
+
+    /**
      * @var array
      */
     protected $guarded = [];
 
     /**
-     * @param $code
-     * @return Currency
-     * @throws InvalidCurrencyException
+     * Disable the built-in currency caching.
+     */
+    public static function disableCache()
+    {
+        static::$cacheEnabled = false;
+    }
+
+    /**
+     * Flush the cached currencies.
+     */
+    public static function flushCache()
+    {
+        static::$cachedModels = null;
+    }
+
+    /**
+     * @param  string  $code
+     * @return Currency|null
      */
     public static function fromCode($code)
     {
-        return static::code($code)->first();
+        if (!static::$cacheEnabled) {
+            return static::where('code', $code)->first();
+        }
+
+        $currencies = static::$cachedModels ??= static::all()->keyBy->code;
+
+        return $currencies->get($code);
     }
 
-    // _________________________________________________________________________________________________________________
-
     /**
-     * @param $query
-     * @param $code
-     * @return mixed
-     */
-    public function scopeCode($query, $code)
-    {
-        return $query->where('code', $code);
-    }
-
-    // _________________________________________________________________________________________________________________
-
-    /**
-     * @param $amount
+     * @param  float  $amount
      * @return Amount
      */
     public function amount($amount)
