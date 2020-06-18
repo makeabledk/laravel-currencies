@@ -1,10 +1,10 @@
 <?php
 
-namespace Makeable\LaravelCurrencies\Responsibilities;
+namespace Makeable\LaravelCurrencies\Concerns;
 
 use BadMethodCallException;
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\FeeContract;
+use Makeable\LaravelCurrencies\Contracts\FeeContract;
 
 trait CalculatesAmounts
 {

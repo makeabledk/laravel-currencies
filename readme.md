@@ -97,7 +97,7 @@ Define it in your `AppServiceProvider@boot`:
 
 ```php
 public function boot() {
-    $this->app->singleton(\Makeable\LaravelCurrencies\BaseCurrency::class, function () {
+    $this->app->singleton(\Makeable\LaravelCurrencies\Contracts\BaseCurrency::class, function () {
         return \Makeable\LaravelCurrencies\Currency::fromCode('EUR');
     });
 }
@@ -117,7 +117,7 @@ public function boot() {
     // [...]
 
     // Define default currency
-    $this->app->singleton(\Makeable\LaravelCurrencies\BaseCurrency::class, function () {
+    $this->app->singleton(\Makeable\LaravelCurrencies\Contracts\BaseCurrency::class, function () {
         return \Makeable\LaravelCurrencies\Currency::fromCode('DKK');
     });
 }

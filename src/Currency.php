@@ -3,6 +3,8 @@
 namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Database\Eloquent\Model;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
 
 class Currency extends Model implements CurrencyContract
 {

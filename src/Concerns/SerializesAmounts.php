@@ -1,9 +1,10 @@
 <?php
 
-namespace Makeable\LaravelCurrencies\Responsibilities;
+namespace Makeable\LaravelCurrencies\Concerns;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\CurrencyContract as Currency;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 
 trait SerializesAmounts
 {

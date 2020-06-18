@@ -1,6 +1,6 @@
 <?php
 
-namespace Makeable\LaravelCurrencies\Responsibilities;
+namespace Makeable\LaravelCurrencies\Concerns;
 
 use Makeable\LaravelCurrencies\Amount;
 

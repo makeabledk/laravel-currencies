@@ -1,9 +1,10 @@
 <?php
 
-namespace Makeable\LaravelCurrencies\Responsibilities;
+namespace Makeable\LaravelCurrencies\Concerns;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\CurrencyContract as Currency;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 
 trait ConvertsBetweenCurrencies
 {
@@ -35,7 +36,7 @@ trait ConvertsBetweenCurrencies
      *
      * @return float
      */
-    private static function baseAmountToLocal($amount, Currency $currency)
+    protected static function baseAmountToLocal($amount, Currency $currency)
     {
         return $amount * ($currency->getExchangeRate() / 100);
     }
@@ -46,7 +47,7 @@ trait ConvertsBetweenCurrencies
      *
      * @return float
      */
-    private static function localAmountToDefault($amount, Currency $currency)
+    protected static function localAmountToDefault($amount, Currency $currency)
     {
         return $amount / ($currency->getExchangeRate() / 100);
     }

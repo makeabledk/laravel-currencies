@@ -3,7 +3,7 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\TestCurrency as Currency;
+use Makeable\LaravelCurrencies\Tests\TestCurrency as Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountOperationsTest extends TestCase

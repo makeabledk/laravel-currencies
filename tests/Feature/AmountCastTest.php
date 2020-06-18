@@ -6,8 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Contracts\ResolvesModelCurrency;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
 use Makeable\LaravelCurrencies\Tests\TestCase;
+use Makeable\LaravelCurrencies\Tests\TestCurrency;
 
 class AmountCastTest extends TestCase
 {
@@ -21,6 +24,10 @@ class AmountCastTest extends TestCase
         Product::$testCast = ['price_amount' => Amount::class];
 
         $this->assertEquals(new Amount(10, 'EUR'), Product::find($product->id)->price_amount);
+
+        Amount::setDefaultCurrency('DKK');
+
+        $this->assertEquals(new Amount(10, 'DKK'), Product::find($product->id)->price_amount);
     }
 
     /** @test **/
@@ -62,7 +69,7 @@ class AmountCastTest extends TestCase
     }
 
     /** @test **/
-    public function it_sets_currency_when_configured_a_currency_field()
+    public function it_sets_currency_when_a_currency_field_is_configured()
     {
         AmountCast::defaultStoredAs('%s_amount', '%s_currency');
 
@@ -85,18 +92,21 @@ class AmountCastTest extends TestCase
     }
 
     /** @test **/
-    public function a_default_currency_may_be_resolved_per_model()
+    public function currencies_may_be_custom_resolved_per_model()
     {
-        AmountCast::defaultStoredAs('%s_amount', '%s_currency');
-        AmountCast::defaultModelCurrency(function (Model $product, $key, array $attributes) {
-            return 'DKK';
-        });
+        $product = new class extends Product implements ResolvesModelCurrency {
+            public function resolveModelCurrency(Model $model, string $field, array $attributes): CurrencyContract
+            {
+                return TestCurrency::fromCode('USD');
+            }
+        };
 
-        Product::$testCast = ['price' => Amount::class];
+        AmountCast::defaultStoredAs('%s_amount', '%s_currency');
+        $product::$testCast = ['price' => Amount::class];
 
         $this->assertEquals(
-            new Amount(12.34, 'DKK'),
-            Product::create(['price' => 12.34])->price
+            new Amount(12.34, 'USD'),
+            $product::create(['price' => 12.34])->price
         );
     }
 

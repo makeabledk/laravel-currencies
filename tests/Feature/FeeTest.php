@@ -3,7 +3,7 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\FeeContract;
+use Makeable\LaravelCurrencies\Contracts\FeeContract;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class FeeTest extends TestCase

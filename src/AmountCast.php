@@ -4,12 +4,12 @@ namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Arr;
+use Makeable\LaravelCurrencies\Contracts\ResolvesModelCurrency;
 
 class AmountCast implements CastsAttributes
 {
     protected static $defaultAmountField = '%s';
     protected static $defaultCurrencyField;
-    protected static $defaultCurrency;
 
     protected $amountField;
     protected $currencyField;
@@ -26,31 +26,6 @@ class AmountCast implements CastsAttributes
     }
 
     /**
-     * @param  string|\Closure  $currency
-     */
-    public static function defaultModelCurrency($currency)
-    {
-        static::$defaultCurrency = $currency;
-    }
-
-    /**
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
-     * @param  array  $attributes
-     * @return mixed
-     */
-    protected static function getDefaultCurrency($model, $key, array $attributes)
-    {
-        $resolve = static::$defaultCurrency instanceof \Closure
-            ? static::$defaultCurrency
-            : function () {
-                return static::$defaultCurrency;
-            };
-
-        return $resolve(...func_get_args()) ?? Amount::defaultCurrency()->getCode();
-    }
-
-    /**
      * @param  null|string  $amountField
      * @param  null|string  $currencyField
      * @param  bool  $nullable
@@ -61,7 +36,7 @@ class AmountCast implements CastsAttributes
 
         $this->amountField = $amountField ?? static::$defaultAmountField;
         $this->currencyField = $currencyField ?? static::$defaultCurrencyField;
-        $this->nullable = $nullable === 'false' ? false : (bool) $nullable;
+        $this->nullable = $nullable === 'false' ? false : (bool)$nullable;
     }
 
     /**
@@ -76,8 +51,8 @@ class AmountCast implements CastsAttributes
     {
         $value = Arr::get($attributes, sprintf($this->amountField, $key));
 
-        if ($value === null && $this->nullable) {
-            return;
+        if (is_null($value) && $this->nullable) {
+            return null;
         }
 
         return new Amount($value, $this->getModelCurrency($model, $key, $attributes));
@@ -85,52 +60,52 @@ class AmountCast implements CastsAttributes
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
+     * @param  string  $field
      * @param  mixed  $value
      * @param  array  $attributes
      * @return array|mixed
      * @throws \Exception
      */
-    public function set($model, string $key, $value, array $attributes)
+    public function set($model, string $field, $value, array $attributes)
     {
-        $value = Amount::parse($value, $modelCurrency = $this->getModelCurrency($model, $key, $attributes));
+        $value = Amount::parse($value, $modelCurrency = $this->getModelCurrency($model, $field, $attributes));
 
         if ($value === null) {
             // We won't set currency field to null in case currency field is shared with other amounts.
-            return [sprintf($this->amountField, $key) => null];
+            return [sprintf($this->amountField, $field) => null];
         }
 
         if ($this->currencyField === null && ($actualCurrency = $value->currency()->getCode()) !== $modelCurrency) {
             throw new \BadMethodCallException(
-                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, ".
-                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency} ".
+                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, " .
+                'as there is no currency field defined on the model ' . get_class($model) . ". Please convert the amount to {$modelCurrency} " .
                 'before setting it, or consider introducing a currency field on the model.'
             );
         }
 
-        $storeAttributes[sprintf($this->amountField, $key)] = $value->get();
+        $storeAttributes[sprintf($this->amountField, $field)] = $value->get();
 
         if ($this->currencyField !== null) {
-            $storeAttributes[sprintf($this->currencyField, $key)] = $value->currency()->getCode();
+            $storeAttributes[sprintf($this->currencyField, $field)] = $value->currency()->getCode();
         }
 
         return $storeAttributes;
     }
 
     /**
-     * @param $model
-     * @param $key
-     * @param $attributes
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $field
+     * @param  array  $attributes
      * @return mixed
      */
-    protected function getModelCurrency($model, $key, $attributes)
+    protected function getModelCurrency($model, $field, $attributes)
     {
-        $currency = Arr::get($attributes, $currencyField = sprintf($this->currencyField, $key));
-
-        if (empty($currency)) {
-            $currency = static::getDefaultCurrency($model, $key, $attributes);
+        if ($model instanceof ResolvesModelCurrency) {
+            return $model->resolveModelCurrency($model, $field, $attributes);
         }
 
-        return $currency;
+        $currency = Arr::get($attributes, $currencyField = sprintf($this->currencyField, $field));
+
+        return $currency ?? value(fn () => Amount::defaultCurrency());
     }
 }

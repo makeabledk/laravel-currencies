@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
+use Makeable\LaravelCurrencies\Tests\TestCurrency;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
 use Makeable\LaravelCurrencies\Tests\Stubs\ProductController;
 
@@ -43,9 +44,8 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         parent::setUp();
 
-        Amount::test();
+        Amount::setBaseCurrency(TestCurrency::fromCode('EUR'));
         AmountCast::defaultStoredAs('%s');
-        AmountCast::defaultModelCurrency(null);
         Product::$testCast = [];
         ProductController::$rules = [];
     }

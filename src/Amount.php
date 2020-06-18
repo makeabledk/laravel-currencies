@@ -5,17 +5,18 @@ namespace Makeable\LaravelCurrencies;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-use Makeable\LaravelCurrencies\CurrencyContract as Currency;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 
 class Amount implements Arrayable, Castable, JsonSerializable
 {
     use Helpers\RetrievesValues,
         Helpers\ValidatesArrays,
-        Responsibilities\CalculatesAmounts,
-        Responsibilities\ComparesAmounts,
-        Responsibilities\ConvertsBetweenCurrencies,
-        Responsibilities\InteractsWithCurrencies,
-        Responsibilities\SerializesAmounts;
+        Concerns\CalculatesAmounts,
+        Concerns\ComparesAmounts,
+        Concerns\ConvertsBetweenCurrencies,
+        Concerns\InteractsWithCurrencies,
+        Concerns\SerializesAmounts;
 
     /**
      * @var float
@@ -70,14 +71,6 @@ class Amount implements Arrayable, Castable, JsonSerializable
         }
 
         return new static($amount);
-    }
-
-    /**
-     * Use the fake currency class as implementation for test purposes.
-     */
-    public static function test()
-    {
-        static::setBaseCurrency(TestCurrency::fromCode('EUR'));
     }
 
     /**

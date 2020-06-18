@@ -8,6 +8,8 @@ class Product extends \Illuminate\Database\Eloquent\Model
 
     protected $guarded = [];
 
+    protected $table = 'products';
+
     public function __construct(array $attributes = [])
     {
         $this->casts = static::$testCast;
