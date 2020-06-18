@@ -4,7 +4,6 @@ namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Database\Eloquent\Model;
 use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
-use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
 
 class Currency extends Model implements CurrencyContract
 {
@@ -45,7 +44,7 @@ class Currency extends Model implements CurrencyContract
      */
     public static function fromCode($code)
     {
-        if (!static::$cacheEnabled) {
+        if (! static::$cacheEnabled) {
             return static::where('code', $code)->first();
         }
 
