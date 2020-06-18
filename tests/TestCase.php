@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\CurrenciesServiceProvider;
-use Makeable\LaravelCurrencies\Tests\TestCurrency;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
 use Makeable\LaravelCurrencies\Tests\Stubs\ProductController;
 

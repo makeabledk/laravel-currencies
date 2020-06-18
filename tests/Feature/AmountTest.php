@@ -5,12 +5,12 @@ namespace Makeable\LaravelCurrencies\Tests\Feature;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\Contracts\BaseCurrency;
 use Makeable\LaravelCurrencies\Contracts\DefaultCurrency;
-use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
 use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
 use Makeable\LaravelCurrencies\Exceptions\MissingBaseCurrencyException;
+use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
+use Makeable\LaravelCurrencies\Tests\TestCase;
 use Makeable\LaravelCurrencies\Tests\TestCurrency;
 use Makeable\LaravelCurrencies\Tests\TestCurrency as Currency;
-use Makeable\LaravelCurrencies\Tests\TestCase;
 
 class AmountTest extends TestCase
 {
@@ -106,12 +106,12 @@ class AmountTest extends TestCase
 
     public function test_separators_can_be_configured()
     {
-        $this->assertEquals("EUR 2.000,00", $this->amount(2000)->toFormat());
+        $this->assertEquals('EUR 2.000,00', $this->amount(2000)->toFormat());
 
         config()->set('money.decimal_separator', '.');
         config()->set('money.thousands_separator', ' ');
 
-        $this->assertEquals("EUR 2 000.00", $this->amount(2000)->toFormat());
+        $this->assertEquals('EUR 2 000.00', $this->amount(2000)->toFormat());
     }
 
     public function test_a_default_formatter_can_be_specified()

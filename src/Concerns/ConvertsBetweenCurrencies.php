@@ -3,7 +3,6 @@
 namespace Makeable\LaravelCurrencies\Concerns;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
 use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 
 trait ConvertsBetweenCurrencies
