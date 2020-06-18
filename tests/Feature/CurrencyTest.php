@@ -20,13 +20,15 @@ class CurrencyTest extends TestCase
     }
 
     /** @test **/
-    public function it_caches_currencies_to_limit_db_queries() 
+    public function it_caches_currencies_to_limit_db_queries()
     {
         Currency::flushCache();
 
         $queries = 0;
 
-        DB::listen(function () use (&$queries) { $queries++; });
+        DB::listen(function () use (&$queries) {
+            $queries++;
+        });
 
         Currency::fromCode('DKK');
         Currency::fromCode('DKK');
@@ -43,7 +45,9 @@ class CurrencyTest extends TestCase
 
         $queries = 0;
 
-        DB::listen(function () use (&$queries) { $queries++; });
+        DB::listen(function () use (&$queries) {
+            $queries++;
+        });
 
         Currency::fromCode('DKK');
         Currency::fromCode('DKK');
