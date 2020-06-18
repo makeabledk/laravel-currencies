@@ -108,8 +108,8 @@ class AmountTest extends TestCase
     {
         $this->assertEquals('EUR 2.000,00', $this->amount(2000)->toFormat());
 
-        config()->set('money.decimal_separator', '.');
-        config()->set('money.thousands_separator', ' ');
+        config()->set('currencies.decimal_separator', '.');
+        config()->set('currencies.thousands_separator', ' ');
 
         $this->assertEquals('EUR 2 000.00', $this->amount(2000)->toFormat());
     }

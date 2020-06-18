@@ -117,7 +117,7 @@ class Amount implements Arrayable, Castable, JsonSerializable
      */
     public function get($decimals = null)
     {
-        return round($this->amount, $decimals ?? config('money.calculation_decimals'));
+        return round($this->amount, $decimals ?? config('currencies.calculation_decimals'));
     }
 
     /**

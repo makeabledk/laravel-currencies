@@ -94,9 +94,9 @@ trait SerializesAmounts
             $this->currency()->getCode(),
             number_format(
                 $this->get(),
-                config('money.formatting_decimals'),
-                config('money.decimal_separator'),
-                config('money.thousands_separator')
+                config('currencies.formatting_decimals'),
+                config('currencies.decimal_separator'),
+                config('currencies.thousands_separator')
             ),
         ];
 
