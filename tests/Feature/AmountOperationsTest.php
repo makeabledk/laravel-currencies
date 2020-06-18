@@ -72,20 +72,19 @@ class AmountOperationsTest extends TestCase
 
     public function test_it_uses_all_decimals_for_calculations()
     {
-        $this->assertEquals(
-            2.69,
-            $this->amount(1.345)->add($this->amount(1.345))->get()
-        );
+        $this->assertEquals(2.22226, $this->amount(1.11113)->add($this->amount(1.11113))->getRaw());
+        $this->assertEquals(2.22226, $this->amount(1.11113)->multiply(2)->getRaw());
+        $this->assertEquals(2.2223, $this->amount(1.11113)->multiply(2)->get());
     }
 
-    public function test_it_can_throttle_to_a_minimum_amount()
+    public function test_it_can_cap_to_a_minimum_amount()
     {
         $this->assertEquals(0, $this->amount(-5)->minimum($this->amount(0))->get());
         $this->assertEquals(-5, $this->amount(-5)->minimum($this->amount(-10))->get());
         $this->assertEquals(5, $this->amount(5)->minimum($this->amount(0))->get());
     }
 
-    public function test_it_can_throttle_to_a_maximum_amount()
+    public function test_it_can_cap_to_a_maximum_amount()
     {
         $this->assertEquals(5.11, $this->amount(10)->maximum($this->amount(5.11))->get());
         $this->assertEquals(5, $this->amount(5)->maximum($this->amount(10))->get());

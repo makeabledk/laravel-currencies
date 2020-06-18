@@ -3,6 +3,7 @@
 namespace Makeable\LaravelCurrencies\Responsibilities;
 
 use Makeable\LaravelCurrencies\Amount;
+use Makeable\LaravelCurrencies\CurrencyContract as Currency;
 
 trait SerializesAmounts
 {
@@ -12,15 +13,15 @@ trait SerializesAmounts
     protected static $formatter;
 
     /**
-     * @param $formatter
+     * @param  callable  $formatter
      */
-    public static function formatUsing($formatter)
+    public static function formatUsing(? callable $formatter)
     {
         static::$formatter = $formatter;
     }
 
     /**
-     * @param array $exported
+     * @param  array  $exported
      *
      * @return Amount|null
      *
@@ -29,7 +30,7 @@ trait SerializesAmounts
     public static function fromArray($exported)
     {
         if ($exported === null) {
-            return;
+            return null;
         }
 
         static::requiresProperties(['amount', 'currency'], $exported);
@@ -39,7 +40,7 @@ trait SerializesAmounts
 
     /**
      * @param $amount
-     * @param Currency | mixed $currency null
+     * @param  Currency | mixed  $currency  null
      * @return static
      */
     public static function fromCents($amount, $currency = null)
@@ -72,11 +73,11 @@ trait SerializesAmounts
      */
     public function toCents()
     {
-        return (int) ($this->get() * 100);
+        return (int) round(($this->get() * 100));
     }
 
     /**
-     * @param callable|null $formatter
+     * @param  callable|null  $formatter
      * @return string
      */
     public function toFormat($formatter = null)
@@ -89,6 +90,16 @@ trait SerializesAmounts
             return call_user_func(static::$formatter, $this);
         }
 
-        return $this->currency()->getCode().' '.number_format($this->get(), 0, ',', '.');
+        [$currency, $amount] = [
+            $this->currency()->getCode(),
+            number_format(
+                $this->get(),
+                config('money.formatting_decimals'),
+                config('money.decimal_separator'),
+                config('money.thousands_separator')
+            )
+        ];
+
+        return "{$currency} {$amount}";
     }
 }

@@ -42,6 +42,14 @@ trait ComparesAmounts
     }
 
     /**
+     * @return bool
+     */
+    public function isZeroCents()
+    {
+        return $this->toCents() === 0;
+    }
+
+    /**
      * @param Amount $amount
      * @return bool
      */

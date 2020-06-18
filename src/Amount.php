@@ -55,7 +55,7 @@ class Amount implements Arrayable, Castable, JsonSerializable
             return new self($value, $defaultCurrency);
         }
 
-        throw new \BadMethodCallException('Failed to parse given value as amount');
+        throw new \BadMethodCallException('Failed to parse given value as a money amount');
     }
 
     /**
@@ -91,8 +91,8 @@ class Amount implements Arrayable, Castable, JsonSerializable
     /**
      * Amount constructor.
      *
-     * @param $amount
-     * @param  Currency | mixed  $currency  null
+     * @param  float  $amount
+     * @param  CurrencyContract | mixed  $currency  null
      *
      * @throws \Exception
      */
@@ -119,11 +119,12 @@ class Amount implements Arrayable, Castable, JsonSerializable
     }
 
     /**
+     * @param  null  $decimals
      * @return float
      */
-    public function get($decimals = 2)
+    public function get($decimals = null)
     {
-        return round($this->amount, $decimals);
+        return round($this->amount, $decimals ?? config('money.calculation_decimals'));
     }
 
     /**

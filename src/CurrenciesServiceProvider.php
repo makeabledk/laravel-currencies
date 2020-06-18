@@ -15,9 +15,13 @@ class CurrenciesServiceProvider extends ServiceProvider
             ], 'migrations');
         }
 
-        $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-currencies')]);
-
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'laravel-currencies');
+
+        $this->mergeConfigFrom(__DIR__.'/../config/money.php', 'money');
+
+        $this->publishes([__DIR__.'/../config/money.php' => config_path('money.php')], 'config');
+
+        $this->publishes([__DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-currencies')], 'translations');
 
         $this->app['validator']->extend('amount', function ($attribute, $value, $parameters, $validator) {
             return (new AmountRule)->passes($attribute, $value);

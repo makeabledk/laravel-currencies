@@ -104,6 +104,16 @@ class AmountTest extends TestCase
         $this->assertEquals(12346, $this->amount(123.456)->toCents());
     }
 
+    public function test_separators_can_be_configured()
+    {
+        $this->assertEquals("EUR 2.000,00", $this->amount(2000)->toFormat());
+
+        config()->set('money.decimal_separator', '.');
+        config()->set('money.thousands_separator', ' ');
+
+        $this->assertEquals("EUR 2 000.00", $this->amount(2000)->toFormat());
+    }
+
     public function test_a_default_formatter_can_be_specified()
     {
         Amount::formatUsing(function (Amount $amount) {
@@ -115,7 +125,7 @@ class AmountTest extends TestCase
         Amount::formatUsing(null);
     }
 
-    public function test_a_formatter_can_be_passed_on_the_fly()
+    public function test_a_formatter_can_be_passed_inline()
     {
         $this->assertEquals(2, $this->amount(2)->toFormat(function (Amount $amount) {
             return $amount->get();
