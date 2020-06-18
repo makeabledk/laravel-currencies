@@ -15,7 +15,7 @@ trait SerializesAmounts
     /**
      * @param  callable  $formatter
      */
-    public static function formatUsing(? callable $formatter)
+    public static function formatUsing(?callable $formatter)
     {
         static::$formatter = $formatter;
     }
@@ -30,7 +30,7 @@ trait SerializesAmounts
     public static function fromArray($exported)
     {
         if ($exported === null) {
-            return null;
+            return;
         }
 
         static::requiresProperties(['amount', 'currency'], $exported);
@@ -97,7 +97,7 @@ trait SerializesAmounts
                 config('money.formatting_decimals'),
                 config('money.decimal_separator'),
                 config('money.thousands_separator')
-            )
+            ),
         ];
 
         return "{$currency} {$amount}";
