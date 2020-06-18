@@ -4,6 +4,7 @@ namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Arr;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
 use Makeable\LaravelCurrencies\Contracts\ResolvesModelCurrency;
 
 class AmountCast implements CastsAttributes
@@ -55,7 +56,7 @@ class AmountCast implements CastsAttributes
             return;
         }
 
-        return new Amount($value, $this->getModelCurrency($model, $key, $attributes));
+        return new Amount($value, $this->resolveModelCurrency($model, $key, $attributes));
     }
 
     /**
@@ -68,17 +69,19 @@ class AmountCast implements CastsAttributes
      */
     public function set($model, string $field, $value, array $attributes)
     {
-        $value = Amount::parse($value, $modelCurrency = $this->getModelCurrency($model, $field, $attributes));
+        $value = Amount::parse($value, $modelCurrency = $this->resolveModelCurrency($model, $field, $attributes));
 
         if ($value === null) {
             // We won't set currency field to null in case currency field is shared with other amounts.
             return [sprintf($this->amountField, $field) => null];
         }
 
-        if ($this->currencyField === null && ($actualCurrency = $value->currency()->getCode()) !== $modelCurrency) {
+        $actualCurrency = $value->currency();
+
+        if ($this->currencyField === null && $actualCurrency->getCode() !== $modelCurrency->getCode()) {
             throw new \BadMethodCallException(
-                "Attempted to set an amount of currency {$actualCurrency} instead of default {$modelCurrency}. This could lead to unexpected behavior, ".
-                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency} ".
+                "Attempted to set an amount of currency {$actualCurrency->getCode()} instead of default {$modelCurrency->getCode()}. This could lead to unexpected behavior, ".
+                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency->getCode()} ".
                 'before setting it, or consider introducing a currency field on the model.'
             );
         }
@@ -96,16 +99,16 @@ class AmountCast implements CastsAttributes
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $field
      * @param  array  $attributes
-     * @return mixed
+     * @return CurrencyContract
      */
-    protected function getModelCurrency($model, $field, $attributes)
+    protected function resolveModelCurrency($model, $field, $attributes): CurrencyContract
     {
         if ($model instanceof ResolvesModelCurrency) {
             return $model->resolveModelCurrency($model, $field, $attributes);
         }
 
-        $currency = Arr::get($attributes, $currencyField = sprintf($this->currencyField, $field));
+        $currencyCode = Arr::get($attributes, $currencyField = sprintf($this->currencyField, $field));
 
-        return $currency ?? value(fn () => Amount::defaultCurrency());
+        return (new Amount(0, $currencyCode))->currency();
     }
 }
