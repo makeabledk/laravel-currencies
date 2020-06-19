@@ -5,6 +5,7 @@ namespace Makeable\LaravelCurrencies\Concerns;
 use Makeable\LaravelCurrencies\Contracts\BaseCurrency;
 use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
 use Makeable\LaravelCurrencies\Contracts\DefaultCurrency;
+use Makeable\LaravelCurrencies\Currency;
 use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
 use Makeable\LaravelCurrencies\Exceptions\MissingBaseCurrencyException;
 
@@ -14,25 +15,30 @@ trait InteractsWithCurrencies
      * "Base currency" is the currency which other currencies exchange rates
      * map to. Base currency should always have a exchange rate of 100.
      *
+     * @param  CurrencyContract|string  $currency
+     * @return CurrencyContract
+     */
+    public static function setBaseCurrency($currency)
+    {
+        app()->instance(BaseCurrency::class, static::normalizeCurrency($currency));
+
+        return $currency;
+    }
+
+    /**
      * If you only want to support one currency in your app, you may
      * simply provide a 3-letter ISO code which is used to format
      * the monetary amount to to your users.
      *
-     * @param  CurrencyContract|string  $currency
-     * @return \Makeable\LaravelCurrencies\Currency
+     * @param  string  $code
+     * @return \Makeable\LaravelCurrencies\Contracts\CurrencyContract|string
      */
-    public static function setBaseCurrency($currency)
+    public static function setSimpleBaseCurrency(string $code)
     {
-        if (! $currency instanceof CurrencyContract && is_string($currency)) {
-            $currency = new \Makeable\LaravelCurrencies\Currency([
-                'code' => $currency,
-                'exchange_rate' => 100,
-            ]);
-        }
-
-        app()->instance(BaseCurrency::class, $currency);
-
-        return $currency;
+        return static::setBaseCurrency(new Currency([
+            'code' => $code,
+            'exchange_rate' => 100,
+        ]));
     }
 
     /**
