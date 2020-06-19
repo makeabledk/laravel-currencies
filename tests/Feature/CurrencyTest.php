@@ -3,56 +3,37 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
-use Makeable\LaravelCurrencies\Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
+use Makeable\LaravelCurrencies\Tests\TestCurrency;
 
 class CurrencyTest extends TestCase
 {
-    use RefreshDatabase;
-
-    /** @test **/
-    public function it_can_create_and_find_currencies()
-    {
-        Currency::create(['code' => 'EUR', 'exchange_rate' => 100]);
-
-        $this->assertEquals('EUR', Currency::first()->code);
-    }
-
     /** @test **/
     public function it_caches_currencies_to_limit_db_queries()
     {
-        Currency::flushCache();
+        ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
 
-        $queries = 0;
+        TestCurrency::flushCache();
 
-        DB::listen(function () use (&$queries) {
-            $queries++;
-        });
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('EUR');
 
-        Currency::fromCode('DKK');
-        Currency::fromCode('DKK');
-        Currency::fromCode('EUR');
-
-        $this->assertEquals(1, $queries);
+        $this->assertCount(1, $connection->getQueryLog());
     }
 
     /** @test **/
     public function currency_caching_may_be_disabled()
     {
-        Currency::flushCache();
-        Currency::disableCache();
+        ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
 
-        $queries = 0;
+        TestCurrency::flushCache();
+        TestCurrency::disableCache();
 
-        DB::listen(function () use (&$queries) {
-            $queries++;
-        });
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('EUR');
 
-        Currency::fromCode('DKK');
-        Currency::fromCode('DKK');
-        Currency::fromCode('EUR');
-
-        $this->assertEquals(3, $queries);
+        $this->assertCount(3, $connection->getQueryLog());
     }
 }

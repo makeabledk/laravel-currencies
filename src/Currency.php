@@ -23,6 +23,14 @@ class Currency extends Model implements CurrencyContract
     protected $guarded = [];
 
     /**
+     * Automatically flush cash when models updated.
+     */
+    public static function booted()
+    {
+//        static::saved(fn () => static::flushCache());
+    }
+
+    /**
      * Disable the built-in currency caching.
      */
     public static function disableCache()
