@@ -2,7 +2,6 @@
 
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Makeable\LaravelCurrencies\Tests\TestCase;
 use Makeable\LaravelCurrencies\Tests\TestCurrency;
 
