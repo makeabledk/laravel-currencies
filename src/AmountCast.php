@@ -104,7 +104,7 @@ class AmountCast implements CastsAttributes
     protected function resolveModelCurrency($model, $field, $attributes): CurrencyContract
     {
         if ($model instanceof ResolvesModelCurrency) {
-            return $model->resolveModelCurrency($model, $field, $attributes);
+            return $model->resolveModelCurrency($field, $attributes);
         }
 
         $currencyCode = Arr::get($attributes, $currencyField = sprintf($this->currencyField, $field));
