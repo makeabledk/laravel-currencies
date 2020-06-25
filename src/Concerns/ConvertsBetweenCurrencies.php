@@ -8,12 +8,14 @@ use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 trait ConvertsBetweenCurrencies
 {
     /**
-     * @param Currency $currency
+     * @param Currency|string $currency
      *
      * @return Amount
      */
-    public function convertTo(Currency $currency)
+    public function convertTo($currency)
     {
+        $currency = static::normalizeCurrency($currency);
+
         if ($this->currency->getCode() === $currency->getCode()) {
             return $this;
         }

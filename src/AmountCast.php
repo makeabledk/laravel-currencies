@@ -78,12 +78,18 @@ class AmountCast implements CastsAttributes
 
         $actualCurrency = $value->currency();
 
-        if ($this->currencyField === null && $actualCurrency->getCode() !== $modelCurrency->getCode() && ! $value->isZero()) {
-            throw new \BadMethodCallException(
-                "Attempted to set an amount of currency {$actualCurrency->getCode()} instead of default {$modelCurrency->getCode()}. This could lead to unexpected behavior, ".
-                'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency->getCode()} ".
-                'before setting it, or consider introducing a currency field on the model.'
-            );
+        if ($this->currencyField === null && $actualCurrency->getCode() !== $modelCurrency->getCode()) {
+            if ($value->isZero()) {
+                // Ensure the cast cache is set with right currency
+                $model->$field = $value->convertTo($modelCurrency);
+            }
+            else {
+                throw new \BadMethodCallException(
+                    "Attempted to set an amount of currency {$actualCurrency->getCode()} instead of default {$modelCurrency->getCode()}. This could lead to unexpected behavior, ".
+                    'as there is no currency field defined on the model '.get_class($model).". Please convert the amount to {$modelCurrency->getCode()} ".
+                    'before setting it, or consider introducing a currency field on the model.'
+                );
+            }
         }
 
         $storeAttributes[sprintf($this->amountField, $field)] = $value->get();

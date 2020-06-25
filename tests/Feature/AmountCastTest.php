@@ -86,8 +86,7 @@ class AmountCastTest extends TestCase
         Product::$testCast = ['price_amount' => Amount::class];
 
         // When amount is zero, we don't mind setting another currency.
-        // NOTE: we have to refresh in our test to get the real currency due to Laravel cast caching
-        $this->assertEquals(new Amount(0, 'EUR'), Product::create(['price_amount' => new Amount(0, 'DKK')])->refresh()->price_amount);
+        $this->assertEquals(new Amount(0, 'EUR'), Product::create(['price_amount' => new Amount(0, 'DKK')])->price_amount);
 
         // Can't set DKK on an EUR field
         $this->expectException(\BadMethodCallException::class);

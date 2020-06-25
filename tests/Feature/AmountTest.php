@@ -64,6 +64,7 @@ class AmountTest extends TestCase
     public function test_it_converts_to_other_currencies()
     {
         $this->assertEquals(222, $this->amount(1500, 'DKK')->convertTo(Currency::fromCode('USD'))->get());
+        $this->assertEquals(222, $this->amount(1500, 'DKK')->convertTo('USD')->get());
     }
 
     public function test_it_can_import_and_export()
