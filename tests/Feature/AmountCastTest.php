@@ -2,7 +2,6 @@
 
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Makeable\LaravelCurrencies\Amount;
 use Makeable\LaravelCurrencies\AmountCast;

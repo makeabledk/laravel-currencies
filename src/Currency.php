@@ -26,7 +26,7 @@ class Currency extends Model implements CurrencyContract
      * @var string[]
      */
     protected $casts = [
-        'exchange_rate' => 'float'
+        'exchange_rate' => 'float',
     ];
 
     /**
