@@ -86,6 +86,11 @@ class AmountCastTest extends TestCase
     {
         Product::$testCast = ['price_amount' => Amount::class];
 
+        // When amount is zero, we don't mind setting another currency.
+        // NOTE: we have to refresh in our test to get the real currency due to Laravel cast caching
+        $this->assertEquals(new Amount(0, 'EUR'), Product::create(['price_amount' => new Amount(0, 'DKK')])->refresh()->price_amount);
+
+        // Can't set DKK on an EUR field
         $this->expectException(\BadMethodCallException::class);
 
         Product::create(['price_amount' => new Amount(12.34, 'DKK')]);
@@ -95,7 +100,7 @@ class AmountCastTest extends TestCase
     public function currencies_may_be_custom_resolved_per_model()
     {
         $product = new class extends Product implements ResolvesModelCurrency {
-            public function resolveModelCurrency(Model $model, string $field, array $attributes): CurrencyContract
+            public function resolveModelCurrency(string $field, array $attributes): CurrencyContract
             {
                 return TestCurrency::fromCode('USD');
             }

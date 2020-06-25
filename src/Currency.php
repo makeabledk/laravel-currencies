@@ -23,6 +23,13 @@ class Currency extends Model implements CurrencyContract
     protected $guarded = [];
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        'exchange_rate' => 'float'
+    ];
+
+    /**
      * Automatically flush cash when models updated.
      */
     public static function booted()
