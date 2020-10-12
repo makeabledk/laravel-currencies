@@ -29,9 +29,10 @@ class Amount implements Arrayable, Castable, JsonSerializable
     protected $currency;
 
     /**
-     * @return string
+     * @param  array  $arguments
+     * @return \Illuminate\Contracts\Database\Eloquent\CastsAttributes|\Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes|string
      */
-    public static function castUsing()
+    public static function castUsing(array $arguments)
     {
         return AmountCast::class;
     }
