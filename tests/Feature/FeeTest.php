@@ -11,7 +11,8 @@ class FeeTest extends TestCase
     /** @test **/
     public function it_can_add_and_subtract_fees_on_an_amount()
     {
-        $danishVAT = new class implements FeeContract {
+        $danishVAT = new class implements FeeContract
+        {
             public function get(Amount $amount)
             {
                 return $amount->multiply(0.25);

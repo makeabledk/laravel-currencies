@@ -97,7 +97,8 @@ class AmountCastTest extends TestCase
     /** @test **/
     public function currencies_may_be_custom_resolved_per_model()
     {
-        $product = new class extends Product implements ResolvesModelCurrency {
+        $product = new class extends Product implements ResolvesModelCurrency
+        {
             public function resolveModelCurrency(string $field, array $attributes): CurrencyContract
             {
                 return TestCurrency::fromCode('USD');
