@@ -1,6 +1,8 @@
 <?php
 
-namespace Makeable\LaravelCurrencies;
+namespace Makeable\LaravelCurrencies\Contracts;
+
+use Makeable\LaravelCurrencies\Amount;
 
 interface FeeContract
 {

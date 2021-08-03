@@ -1,6 +1,6 @@
 <?php
 
-namespace Makeable\LaravelCurrencies\Responsibilities;
+namespace Makeable\LaravelCurrencies\Concerns;
 
 use Makeable\LaravelCurrencies\Amount;
 
@@ -39,6 +39,14 @@ trait ComparesAmounts
     public function isZero()
     {
         return $this->get() === (float) 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isZeroCents()
+    {
+        return $this->toCents() === 0;
     }
 
     /**

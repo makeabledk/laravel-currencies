@@ -2,19 +2,21 @@
 
 namespace Makeable\LaravelCurrencies;
 
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
-use Makeable\LaravelCurrencies\CurrencyContract as Currency;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract as Currency;
 
-class Amount implements Arrayable, JsonSerializable
+class Amount implements Arrayable, Castable, JsonSerializable
 {
     use Helpers\RetrievesValues,
         Helpers\ValidatesArrays,
-        Responsibilities\ComparesAmounts,
-        Responsibilities\ConvertsBetweenCurrencies,
-        Responsibilities\InteractsWithCurrencies,
-        Responsibilities\SerializesAmounts,
-        Responsibilities\TransformsAmounts;
+        Concerns\CalculatesAmounts,
+        Concerns\ComparesAmounts,
+        Concerns\ConvertsBetweenCurrencies,
+        Concerns\InteractsWithCurrencies,
+        Concerns\SerializesAmounts;
 
     /**
      * @var float
@@ -27,17 +29,35 @@ class Amount implements Arrayable, JsonSerializable
     protected $currency;
 
     /**
-     * Amount constructor.
-     *
-     * @param $amount
-     * @param  Currency | mixed  $currency  null
-     *
-     * @throws \Exception
+     * @param  array  $arguments
+     * @return \Illuminate\Contracts\Database\Eloquent\CastsAttributes|\Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes|string
      */
-    public function __construct($amount, $currency = null)
+    public static function castUsing(array $arguments)
     {
-        $this->amount = $amount;
-        $this->currency = static::normalizeCurrency($currency);
+        return AmountCast::class;
+    }
+
+    /**
+     * @param  mixed  $value
+     * @param  null  $defaultCurrency
+     * @return static|null
+     * @throws \BadMethodCallException
+     */
+    public static function parse($value, $defaultCurrency = null)
+    {
+        if ($value === null || $value instanceof static) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            return self::fromArray($value);
+        }
+
+        if (is_numeric($value)) {
+            return new self($value, $defaultCurrency);
+        }
+
+        throw new \BadMethodCallException('Failed to parse given value as a money amount');
     }
 
     /**
@@ -55,19 +75,25 @@ class Amount implements Arrayable, JsonSerializable
     }
 
     /**
-     * Use the fake currency class as implementation for test purposes.
-     */
-    public static function test()
-    {
-        static::setBaseCurrency(TestCurrency::fromCode('EUR'));
-    }
-
-    /**
      * @return Amount
      */
     public static function zero()
     {
         return new static(0);
+    }
+
+    /**
+     * Amount constructor.
+     *
+     * @param  float  $amount
+     * @param  CurrencyContract | mixed  $currency  null
+     *
+     * @throws \Exception
+     */
+    public function __construct($amount, $currency = null)
+    {
+        $this->amount = $amount;
+        $this->currency = static::normalizeCurrency($currency);
     }
 
     /**
@@ -87,11 +113,12 @@ class Amount implements Arrayable, JsonSerializable
     }
 
     /**
+     * @param  null  $decimals
      * @return float
      */
-    public function get($decimals = 2)
+    public function get($decimals = null)
     {
-        return round($this->amount, $decimals);
+        return round($this->amount, $decimals ?? config('currencies.calculation_decimals'));
     }
 
     /**

@@ -3,14 +3,14 @@
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Amount;
-use Makeable\LaravelCurrencies\BaseCurrency;
-use Makeable\LaravelCurrencies\DefaultCurrency;
+use Makeable\LaravelCurrencies\Contracts\BaseCurrency;
+use Makeable\LaravelCurrencies\Contracts\DefaultCurrency;
+use Makeable\LaravelCurrencies\Exceptions\InvalidCurrencyException;
+use Makeable\LaravelCurrencies\Exceptions\MissingBaseCurrencyException;
 use Makeable\LaravelCurrencies\Helpers\MissingPropertiesException;
-use Makeable\LaravelCurrencies\InvalidCurrencyException;
-use Makeable\LaravelCurrencies\MissingBaseCurrencyException;
-use Makeable\LaravelCurrencies\TestCurrency;
-use Makeable\LaravelCurrencies\TestCurrency as Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
+use Makeable\LaravelCurrencies\Tests\TestCurrency;
+use Makeable\LaravelCurrencies\Tests\TestCurrency as Currency;
 
 class AmountTest extends TestCase
 {
@@ -64,6 +64,7 @@ class AmountTest extends TestCase
     public function test_it_converts_to_other_currencies()
     {
         $this->assertEquals(222, $this->amount(1500, 'DKK')->convertTo(Currency::fromCode('USD'))->get());
+        $this->assertEquals(222, $this->amount(1500, 'DKK')->convertTo('USD')->get());
     }
 
     public function test_it_can_import_and_export()
@@ -104,6 +105,16 @@ class AmountTest extends TestCase
         $this->assertEquals(12346, $this->amount(123.456)->toCents());
     }
 
+    public function test_separators_can_be_configured()
+    {
+        $this->assertEquals('EUR 2.000,00', $this->amount(2000)->toFormat());
+
+        config()->set('currencies.decimal_separator', '.');
+        config()->set('currencies.thousands_separator', ' ');
+
+        $this->assertEquals('EUR 2 000.00', $this->amount(2000)->toFormat());
+    }
+
     public function test_a_default_formatter_can_be_specified()
     {
         Amount::formatUsing(function (Amount $amount) {
@@ -115,7 +126,7 @@ class AmountTest extends TestCase
         Amount::formatUsing(null);
     }
 
-    public function test_a_formatter_can_be_passed_on_the_fly()
+    public function test_a_formatter_can_be_passed_inline()
     {
         $this->assertEquals(2, $this->amount(2)->toFormat(function (Amount $amount) {
             return $amount->get();
@@ -126,5 +137,10 @@ class AmountTest extends TestCase
     {
         $this->assertEquals(2, Amount::wrap(2)->get());
         $this->assertEquals(2, Amount::wrap(new Amount(2))->get());
+    }
+
+    public function test_it_equals_zero_when_instantiating_with_null()
+    {
+        $this->assertEquals(0.0, (new Amount(null))->get());
     }
 }

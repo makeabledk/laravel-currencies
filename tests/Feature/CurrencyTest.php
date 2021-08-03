@@ -2,22 +2,37 @@
 
 namespace Makeable\LaravelCurrencies\Tests\Feature;
 
-use Cache;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Makeable\LaravelCurrencies\Currency;
 use Makeable\LaravelCurrencies\Tests\TestCase;
+use Makeable\LaravelCurrencies\Tests\TestCurrency;
 
 class CurrencyTest extends TestCase
 {
-    use RefreshDatabase;
+    /** @test **/
+    public function it_caches_currencies_to_limit_db_queries()
+    {
+        ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
+
+        TestCurrency::flushCache();
+
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('EUR');
+
+        $this->assertCount(1, $connection->getQueryLog());
+    }
 
     /** @test **/
-    public function it_can_create_and_find_currencies()
+    public function currency_caching_may_be_disabled()
     {
-        Currency::create(['code' => 'EUR', 'exchange_rate' => 100]);
+        ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
 
-        Cache::flush();
+        TestCurrency::flushCache();
+        TestCurrency::disableCache();
 
-        $this->assertEquals('EUR', Currency::first()->code);
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('DKK');
+        TestCurrency::fromCode('EUR');
+
+        $this->assertCount(3, $connection->getQueryLog());
     }
 }

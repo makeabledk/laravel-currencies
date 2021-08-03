@@ -3,11 +3,19 @@
 namespace Makeable\LaravelCurrencies;
 
 use Illuminate\Database\Eloquent\Model;
-use Watson\Rememberable\Rememberable;
+use Makeable\LaravelCurrencies\Contracts\CurrencyContract;
 
 class Currency extends Model implements CurrencyContract
 {
-    use Rememberable;
+    /**
+     * @var bool
+     */
+    public static $cacheEnabled = true;
+
+    /**
+     * @var \Illuminate\Support\Collection|null
+     */
+    protected static $cachedModels;
 
     /**
      * @var array
@@ -15,47 +23,53 @@ class Currency extends Model implements CurrencyContract
     protected $guarded = [];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $rememberCachePrefix = 'currency_query_';
+    protected $casts = [
+        'exchange_rate' => 'float',
+    ];
 
     /**
-     * @var string
+     * Automatically flush cash when models updated.
      */
-//    protected $rememberCacheTag = 'currencies'; // Uncomment if your cache store supports tags
+    public static function booted()
+    {
+        static::saved(fn () => static::flushCache());
+    }
 
     /**
-     * Always cache queries. Cache is flushed on update by production-seeder.
-     * @var int
+     * Disable the built-in currency caching.
      */
-    protected $rememberFor = 60 * 24 * 365;
+    public static function disableCache()
+    {
+        static::$cacheEnabled = false;
+    }
 
     /**
-     * @param $code
-     * @return Currency
-     * @throws InvalidCurrencyException
+     * Flush the cached currencies.
+     */
+    public static function flushCache()
+    {
+        static::$cachedModels = null;
+    }
+
+    /**
+     * @param  string  $code
+     * @return Currency|null
      */
     public static function fromCode($code)
     {
-        return static::code($code)->first();
+        if (! static::$cacheEnabled) {
+            return static::where('code', $code)->first();
+        }
+
+        $currencies = static::$cachedModels ??= static::all()->keyBy->code;
+
+        return $currencies->get($code);
     }
 
-    // _________________________________________________________________________________________________________________
-
     /**
-     * @param $query
-     * @param $code
-     * @return mixed
-     */
-    public function scopeCode($query, $code)
-    {
-        return $query->where('code', $code);
-    }
-
-    // _________________________________________________________________________________________________________________
-
-    /**
-     * @param $amount
+     * @param  float  $amount
      * @return Amount
      */
     public function amount($amount)

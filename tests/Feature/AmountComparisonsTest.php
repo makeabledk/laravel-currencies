@@ -42,7 +42,14 @@ class AmountComparisonsTest extends TestCase
     public function test_is_zero()
     {
         $this->assertTrue($this->amount(0)->isZero());
-        $this->assertTrue($this->amount(0.004)->isZero());
-        $this->assertFalse($this->amount(0.005)->isZero());
+        $this->assertTrue($this->amount(0.00004)->isZero());
+        $this->assertFalse($this->amount(0.00005)->isZero());
+    }
+
+    public function test_is_zero_cents()
+    {
+        $this->assertTrue($this->amount(0)->isZeroCents());
+        $this->assertTrue($this->amount(0.004)->isZeroCents());
+        $this->assertFalse($this->amount(0.005)->isZeroCents());
     }
 }

@@ -7,16 +7,16 @@
         }
     },
     "require": {
-        "php": ">=7.1.0",
-        "illuminate/container": "^6.0|^7.0",
-        "illuminate/support": "^6.0|^7.0",
-        "watson/rememberable": "^3.0|^4.0"
+        "php": ">=7.4.0",
+        "illuminate/container": "^8.0",
+        "illuminate/support": "^8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
-        "laravel/laravel": "^6.0|^7.0",
-        "phpunit/phpunit": "^8.5",
-        "mockery/mockery": "^1.3"
+        "laravel/laravel": "^8.0",
+        "phpunit/phpunit": "^9.0",
+        "mockery/mockery": "^1.3",
+        "calebporzio/sushi": "^2.0"
     },
     "suggest": {
         "illuminate/database": "Required to use Eloquent Currency implementation",

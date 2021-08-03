@@ -1,6 +1,6 @@
 <?php
 
-namespace Makeable\LaravelCurrencies;
+namespace Makeable\LaravelCurrencies\Contracts;
 
 interface CurrencyContract
 {
