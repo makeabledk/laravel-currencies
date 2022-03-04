@@ -22,7 +22,6 @@ trait SerializesAmounts
 
     /**
      * @param  array  $exported
-     *
      * @return Amount|null
      *
      * @throws \Exception

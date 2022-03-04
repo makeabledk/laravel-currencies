@@ -51,8 +51,9 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
 
     /**
      * @param $amount
-     * @param null $currency
+     * @param  null  $currency
      * @return Amount
+     *
      * @throws \Exception
      */
     protected function amount($amount, $currency = null)

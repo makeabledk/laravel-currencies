@@ -8,19 +8,15 @@
     },
     "require": {
         "php": ">=7.4.0",
-        "illuminate/container": "^8.0",
-        "illuminate/support": "^8.0"
+        "illuminate/container": "^8.0|^9.0",
+        "illuminate/support": "^8.0|^9.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
-        "laravel/laravel": "^8.0",
-        "phpunit/phpunit": "^9.0",
-        "mockery/mockery": "^1.3",
+        "laravel/laravel": "^8.0|^9.0",
+        "phpunit/phpunit": "^9.5",
+        "mockery/mockery": "^1.5",
         "calebporzio/sushi": "^2.0"
-    },
-    "suggest": {
-        "illuminate/database": "Required to use Eloquent Currency implementation",
-        "makeabledk/laravel-production-seeding": "Setup easy seeding of your currencies across environments"
     },
     "autoload-dev": {
         "psr-4": {

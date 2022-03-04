@@ -48,7 +48,7 @@ class AmountRuleTest extends TestCase
         [$amountError, $minError, $maxError] = [
             'The price must be a valid money amount.',
             'The price must be at least 0.',
-            'The price may not be greater than 1000.',
+            'The price must not be greater than 1000.',
         ];
 
         $this->handleValidationExceptions();

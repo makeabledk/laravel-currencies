@@ -1,7 +1,7 @@
 # Laravel Currencies
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/makeabledk/laravel-currencies.svg?style=flat-square)](https://packagist.org/packages/makeabledk/laravel-currencies)
-[![Build Status](https://img.shields.io/travis/makeabledk/laravel-currencies/master.svg?style=flat-square)](https://travis-ci.org/makeabledk/laravel-currencies)
+[![Build Status](https://img.shields.io/github/workflow/status/makeabledk/laravel-currencies/Run%20tests?label=Tests)](https://github.com/makeabledk/laravel-currencies/actions)
 [![StyleCI](https://styleci.io/repos/108846048/shield?branch=master)](https://styleci.io/repos/108846048)
 
 This package provides a convenient and powerful way of interacting with currencies and amounts in Laravel.
