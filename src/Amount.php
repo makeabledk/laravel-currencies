@@ -41,6 +41,7 @@ class Amount implements Arrayable, Castable, JsonSerializable
      * @param  mixed  $value
      * @param  null  $defaultCurrency
      * @return static|null
+     *
      * @throws \BadMethodCallException
      */
     public static function parse($value, $defaultCurrency = null)
@@ -63,6 +64,7 @@ class Amount implements Arrayable, Castable, JsonSerializable
     /**
      * @param  mixed  $amount
      * @return static
+     *
      * @throws \Exception
      */
     public static function wrap($amount)

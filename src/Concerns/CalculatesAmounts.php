@@ -9,9 +9,9 @@ use Makeable\LaravelCurrencies\Contracts\FeeContract;
 trait CalculatesAmounts
 {
     /**
-     * @param Amount | FeeContract $amount
-     *
+     * @param  Amount | FeeContract  $amount
      * @return Amount
+     *
      * @throws \Throwable
      */
     public function add($amount)
@@ -41,8 +41,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param Amount $amount
-     *
+     * @param  Amount  $amount
      * @return Amount
      */
     public function maximum(Amount $amount)
@@ -55,8 +54,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param Amount $amount
-     *
+     * @param  Amount  $amount
      * @return Amount
      */
     public function minimum(Amount $amount)
@@ -105,9 +103,9 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param Amount | FeeContract $amount
-     *
+     * @param  Amount | FeeContract  $amount
      * @return Amount
+     *
      * @throws \Throwable
      */
     public function subtract($amount)
@@ -128,8 +126,7 @@ trait CalculatesAmounts
      * Retrieve the sum of an array.
      *
      * @param $items
-     * @param null $callback
-     *
+     * @param  null  $callback
      * @return Amount
      *
      * @throws \Exception

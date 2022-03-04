@@ -8,7 +8,6 @@ trait RetrievesValues
      * Returns a closure function to retrieve a value from an $item parameter.
      *
      * @param $value
-     *
      * @return \Closure
      */
     protected static function valueRetriever($value)

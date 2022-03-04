@@ -63,6 +63,7 @@ trait InteractsWithCurrencies
 
     /**
      * @return CurrencyContract
+     *
      * @throws MissingBaseCurrencyException
      */
     public static function baseCurrency()
@@ -89,6 +90,7 @@ trait InteractsWithCurrencies
     /**
      * @param  CurrencyContract|string  $currency
      * @return CurrencyContract
+     *
      * @throws InvalidCurrencyException
      * @throws MissingBaseCurrencyException
      */
@@ -119,6 +121,7 @@ trait InteractsWithCurrencies
     /**
      * @param  mixed  $currency
      * @return CurrencyContract
+     *
      * @throws InvalidCurrencyException
      */
     protected static function ensureValidCurrency($currency)

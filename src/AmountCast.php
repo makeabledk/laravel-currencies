@@ -46,6 +46,7 @@ class AmountCast implements CastsAttributes
      * @param  mixed  $value
      * @param  array  $attributes
      * @return \Makeable\LaravelCurrencies\Amount|mixed
+     *
      * @throws \Exception
      */
     public function get($model, string $key, $value, array $attributes)
@@ -65,6 +66,7 @@ class AmountCast implements CastsAttributes
      * @param  mixed  $value
      * @param  array  $attributes
      * @return array|mixed
+     *
      * @throws \Exception
      */
     public function set($model, string $field, $value, array $attributes)
