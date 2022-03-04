@@ -7,7 +7,7 @@ use Makeable\LaravelCurrencies\Amount;
 trait ComparesAmounts
 {
     /**
-     * @param Amount $amount
+     * @param  Amount  $amount
      * @return bool
      */
     public function equals(Amount $amount)
@@ -16,7 +16,7 @@ trait ComparesAmounts
     }
 
     /**
-     * @param Amount $amount
+     * @param  Amount  $amount
      * @return bool
      */
     public function gt(Amount $amount)
@@ -25,7 +25,7 @@ trait ComparesAmounts
     }
 
     /**
-     * @param Amount $amount
+     * @param  Amount  $amount
      * @return bool
      */
     public function gte(Amount $amount)
@@ -50,7 +50,7 @@ trait ComparesAmounts
     }
 
     /**
-     * @param Amount $amount
+     * @param  Amount  $amount
      * @return bool
      */
     public function lt(Amount $amount)
@@ -59,7 +59,7 @@ trait ComparesAmounts
     }
 
     /**
-     * @param Amount $amount
+     * @param  Amount  $amount
      * @return bool
      */
     public function lte(Amount $amount)

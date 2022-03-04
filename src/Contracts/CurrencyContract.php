@@ -6,7 +6,6 @@ interface CurrencyContract
 {
     /**
      * @param $code
-     *
      * @return CurrencyContract
      */
     public static function fromCode($code);
