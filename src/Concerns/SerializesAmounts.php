@@ -38,7 +38,7 @@ trait SerializesAmounts
     }
 
     /**
-     * @param $amount
+     * @param  $amount
      * @param  Currency | mixed  $currency  null
      * @return static
      */
@@ -72,7 +72,7 @@ trait SerializesAmounts
      */
     public function toCents()
     {
-        return (int) round(($this->get() * 100));
+        return (int) round($this->get() * 100);
     }
 
     /**
