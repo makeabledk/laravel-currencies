@@ -29,7 +29,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param $factor
+     * @param  $factor
      * @return Amount
      */
     public function divide($factor)
@@ -67,7 +67,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param $factor
+     * @param  $factor
      * @return Amount
      */
     public function multiply($factor)
@@ -79,7 +79,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param $percentage
+     * @param  $percentage
      * @return Amount
      */
     public function percent($percentage)
@@ -91,7 +91,7 @@ trait CalculatesAmounts
     }
 
     /**
-     * @param $decimals
+     * @param  $decimals
      * @return Amount
      */
     public function round($decimals)
@@ -125,7 +125,7 @@ trait CalculatesAmounts
     /**
      * Retrieve the sum of an array.
      *
-     * @param $items
+     * @param  $items
      * @param  null  $callback
      * @return Amount
      *
