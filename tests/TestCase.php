@@ -50,7 +50,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * @param $amount
+     * @param  $amount
      * @param  null  $currency
      * @return Amount
      *
@@ -62,7 +62,7 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * @param $abstract
+     * @param  $abstract
      * @return $this
      */
     protected function unsetContainer($abstract)

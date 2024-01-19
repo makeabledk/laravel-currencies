@@ -31,7 +31,7 @@ trait ConvertsBetweenCurrencies
     }
 
     /**
-     * @param $amount
+     * @param  $amount
      * @param  Currency  $currency
      * @return float
      */
@@ -41,7 +41,7 @@ trait ConvertsBetweenCurrencies
     }
 
     /**
-     * @param $amount
+     * @param  $amount
      * @param  Currency  $currency
      * @return float
      */
