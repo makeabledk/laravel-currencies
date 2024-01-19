@@ -5,8 +5,8 @@ namespace Makeable\LaravelCurrencies\Helpers;
 trait ValidatesArrays
 {
     /**
-     * @param $keys
-     * @param $array
+     * @param  $keys
+     * @param  $array
      *
      * @throws MissingPropertiesException
      */
