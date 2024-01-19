@@ -18,7 +18,7 @@ class AmountRuleTest extends TestCase
 
         $this->handleValidationExceptions();
 
-        $error = 'The price must be a valid money amount.';
+        $error = 'The price field must be a valid money amount.';
 
         $this->postJson('products', ['price' => 123])->assertSuccessful();
         $this->postJson('products', ['price' => 123.12])->assertSuccessful();
@@ -46,9 +46,9 @@ class AmountRuleTest extends TestCase
         ProductController::$rules = ['price' => ['required', (new \Makeable\LaravelCurrencies\Rules\Amount())->between(0, 1000)]];
 
         [$amountError, $minError, $maxError] = [
-            'The price must be a valid money amount.',
-            'The price must be at least 0.',
-            'The price must not be greater than 1000.',
+            'The price field must be a valid money amount.',
+            'The price field must be at least 0.',
+            'The price field must not be greater than 1000.',
         ];
 
         $this->handleValidationExceptions();
