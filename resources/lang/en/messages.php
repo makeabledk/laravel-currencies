@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'amount' => 'The :attribute must be a valid money amount.',
+    'amount' => 'The :attribute field must be a valid money amount.',
 ];
