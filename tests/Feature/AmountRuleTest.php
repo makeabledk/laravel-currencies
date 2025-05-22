@@ -8,10 +8,11 @@ use Makeable\LaravelCurrencies\AmountCast;
 use Makeable\LaravelCurrencies\Tests\Stubs\Product;
 use Makeable\LaravelCurrencies\Tests\Stubs\ProductController;
 use Makeable\LaravelCurrencies\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class AmountRuleTest extends TestCase
 {
-    /** @test **/
+    #[Test]
     public function it_can_validate_amounts_using_string_rule()
     {
         ProductController::$rules = ['price' => 'required|amount'];
@@ -29,7 +30,7 @@ class AmountRuleTest extends TestCase
         $this->postJson('products', ['price' => ['amount' => 123, 'currency' => 'foo bar']])->assertJsonValidationErrors(['price' => $error]);
     }
 
-    /** @test **/
+    #[Test]
     public function it_respects_nullable_amounts_using_string_rule()
     {
         ProductController::$rules = ['price' => 'nullable|amount'];
@@ -40,7 +41,7 @@ class AmountRuleTest extends TestCase
         $this->postJson('products', ['price' => 123])->assertSuccessful();
     }
 
-    /** @test **/
+    #[Test]
     public function min_and_max_values_can_be_specified_using_the_helpers_on_rule_object()
     {
         ProductController::$rules = ['price' => ['required', (new \Makeable\LaravelCurrencies\Rules\Amount())->between(0, 1000)]];
