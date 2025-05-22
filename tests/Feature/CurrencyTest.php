@@ -4,10 +4,11 @@ namespace Makeable\LaravelCurrencies\Tests\Feature;
 
 use Makeable\LaravelCurrencies\Tests\TestCase;
 use Makeable\LaravelCurrencies\Tests\TestCurrency;
+use PHPUnit\Framework\Attributes\Test;
 
 class CurrencyTest extends TestCase
 {
-    /** @test **/
+    #[Test]
     public function it_caches_currencies_to_limit_db_queries()
     {
         ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
@@ -21,7 +22,7 @@ class CurrencyTest extends TestCase
         $this->assertCount(1, $connection->getQueryLog());
     }
 
-    /** @test **/
+    #[Test]
     public function currency_caching_may_be_disabled()
     {
         ($connection = (new TestCurrency)->getConnection())->enableQueryLog();
