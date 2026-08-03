@@ -15,7 +15,7 @@ trait SerializesAmounts
     /**
      * @param  callable  $formatter
      */
-    public static function formatUsing(?callable $formatter)
+    public static function formatUsing(?callable $formatter): void
     {
         static::$formatter = $formatter;
     }
@@ -50,7 +50,7 @@ trait SerializesAmounts
     /**
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -58,7 +58,7 @@ trait SerializesAmounts
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'amount' => $this->get(),
@@ -70,7 +70,7 @@ trait SerializesAmounts
     /**
      * @return int
      */
-    public function toCents()
+    public function toCents(): int
     {
         return (int) round($this->get() * 100);
     }

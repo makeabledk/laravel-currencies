@@ -30,6 +30,12 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $app->useEnvironmentPath(__DIR__.'/..');
         $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
         $app->register(CurrenciesServiceProvider::class);
+
+        // The laravel/laravel v13 skeleton only renders exceptions as JSON for api/* routes.
+        // Restore the Accept-header based behavior that our test routes rely on.
+        $app->make(\Illuminate\Contracts\Debug\ExceptionHandler::class)
+            ->shouldRenderJsonWhen(fn ($request) => $request->expectsJson());
+
         $app->afterResolving('migrator', function (Migrator $migrator) {
             $migrator->path(__DIR__.'/migrations/');
         });
